@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ali Ennadafy - Portfolio</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* LOADER */
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #0B0B0F;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loader-circle {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #fff;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* SCROLL ANIMATION */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* CURSOR */
+    @media (min-width: 768px) {
+      body {
+        cursor: none;
+      }
+
+      .cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease;
+        z-index: 9999;
+      }
+
+      .cursor-grow {
+        transform: translate(-50%, -50%) scale(2);
+      }
+    }
+
+    /* SKILLS TRACK */
+    .skills-track {
+      display: flex;
+      gap: 30px;
+      width: max-content;
+      animation: scrollLeft 25s linear infinite;
+    }
+
+    .skills-track.reverse {
+      animation: scrollRight 25s linear infinite;
+    }
+
+    @keyframes scrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @keyframes scrollRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    .skill-box {
+      position: relative;
+      min-width: 80px;
+      height: 80px;
+      border: 1px solid #222;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0B0B0F;
+      transition: 0.3s;
+    }
+
+    .skill-box img {
+      width: 40px;
+      opacity: 0.7;
+      transition: 0.3s;
+    }
+
+    .skill-box:hover {
+      border-color: #a855f7;
+      box-shadow: 0 0 20px #a855f7;
+      transform: scale(1.1);
+    }
+
+    .skill-box:hover img {
+      opacity: 1;
+    }
+
+    .skill-box::after {
+      content: attr(data-name);
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(5px);
+      background: #111;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: white;
+      opacity: 0;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .skill-box:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+        html {
+      scroll-behavior: smooth;
+    }
+
+  </style>
+</head>
+
+<body class="bg-[#0B0B0F] text-white font-sans">
+
+  <div id="loader">
+    <div class="loader-circle"></div>
+  </div>
+
+  <div class="cursor"></div>
+
+  <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
+    <a href="https://github.com/coderaliennadafy" target="_blank"
+      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
+      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+      </svg>
+    </a>
+    <a href="mailto:ennadafy@gmail.com"
+      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
+      <i data-lucide="mail" class="w-6 h-6"></i>
+    </a>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6">
+    <nav class="flex justify-between items-center py-6 fade-up">
+        <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
+        <div class="space-x-6 text-sm text-gray-400">
+            <a href="#about" class="hover:text-white transition link">About</a>
+            <a href="#skills" class="hover:text-white transition link">Skills</a>
+            <a href="#projects" class="hover:text-white transition link">Projects</a>
+            <a href="#certifications" class="hover:text-white transition link">Certifications</a>
+            <a href="#contact" class="hover:text-white transition link">Contact</a>
+        </div>
+        <a href="Ali_Ennadafy_QA.pdf" target="_blank"
+            class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
+            Resume
+        </a>
+    </nav>
+
+    <section class="py-20 flex flex-col md:flex-row items-center justify-between fade-up">
+      <div class="max-w-xl">
+        <h1 class="text-5xl md:text-7xl font-semibold leading-tight flex items-center gap-3">
+          <span class="text-purple-400 text-3xl md:text-5xl">[</span>
+          <span id="typing" class="text-white text-5xl md:text-7xl"></span>
+          <span class="text-purple-400 text-3xl md:text-5xl">]</span>
+        </h1>
+        <p class="mt-6 text-gray-400 text-lg">
+          Specialized in Manual & API Testing. I design test cases and find critical bugs to ensure high-quality applications.
+        </p>
+        <div class="mt-10">
+          <a href="#projects"
+            class="bg-white text-black px-6 py-3 rounded-full text-sm hover:bg-gray-300 transition duration-300 shadow-lg link">
+            View Work
+          </a>
+        </div>
+      </div>
+      <div class="relative mt-10 md:mt-0">
+        <div class="absolute inset-0 rounded-full bg-purple-500 blur-2xl opacity-30"></div>
+        <img src="imagprt.jpeg" class="w-64 h-64 object-cover rounded-full border-4 border-white relative z-10 shadow-xl">
+      </div>
+    </section>
+
+    <section id="about" class="pt-40 pb-10 fade-up">
+  <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center">What I Do?</h2>
+      <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+        <div class="border border-gray-800 p-8 rounded-2xl hover:border-purple-500 transition">
+          <h3 class="text-xl font-medium mb-4">Software Testing</h3>
+          <ul class="list-disc pl-5 text-gray-400 text-sm space-y-2">
+            <li>Designed and executed structured test cases</li>
+            <li>Tested web applications and validated authentication workflows</li>
+            <li>Performed API testing using Postman</li>
+            <li>Automated test checks using JavaScript (pm.test)</li>
+          </ul>
+          <div class="flex flex-wrap gap-2 text-xs text-gray-300 mt-6">
+            <span class="border px-3 py-1 rounded-full">Manual Testing</span>
+            <span class="border px-3 py-1 rounded-full">API Testing</span>
+            <span class="border px-3 py-1 rounded-full">Postman</span>
+          </div>
+        </div>
+        <div class="border border-gray-800 p-8 rounded-2xl hover:border-purple-500 transition">
+          <h3 class="text-xl font-medium mb-4">Artificial Intelligence</h3>
+          <ul class="list-disc pl-5 text-gray-400 text-sm space-y-2">
+            <li>Developed Nexus Crypto Pro for data analysis</li>
+            <li>Processed data using Python and statistical methods</li>
+            <li>Applied probability and linear algebra concepts</li>
+            <li>Combining AI with testing for anomaly detection</li>
+          </ul>
+          <div class="flex flex-wrap gap-2 text-xs text-gray-300 mt-6">
+            <span class="border px-3 py-1 rounded-full">Python</span>
+            <span class="border px-3 py-1 rounded-full">Machine Learning</span>
+            <span class="border px-3 py-1 rounded-full">SQL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="py-32 fade-up overflow-hidden">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-16 text-center">Skills & Technologies</h2>
+      <div class="skills-track mb-10">
+        <div class="skill-box" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
+        <div class="skill-box" data-name="Git"><img src="https://img.icons8.com/color/96/git.png"></div>
+        <div class="skill-box" data-name="GitHub"><img src="https://img.icons8.com/ios-glyphs/90/ffffff/github.png"></div>
+        <div class="skill-box" data-name="Linux"><img src="https://img.icons8.com/color/96/linux.png"></div>
+        <div class="skill-box" data-name="C"><img src="https://img.icons8.com/color/96/c-programming.png"></div>
+        <div class="skill-box" data-name="Bug Reporting"><img src="https://img.icons8.com/fluency/96/bug.png"></div>
+        <div class="skill-box" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
+        <div class="skill-box" data-name="Canva"><img src="https://img.icons8.com/color/96/canva.png"></div>
+        <div class="skill-box" data-name="Excel"><img src="https://img.icons8.com/color/96/microsoft-excel-2019.png"></div>
+        <div class="skill-box" data-name="Jira"><img src="https://img.icons8.com/color/96/jira.png"></div>
+        <div class="skill-box" data-name="google Docs"><img src="https://img.icons8.com/color/96/google-docs.png"></div>
+        <div class="skill-box" data-name="google Sheets"><img src="https://img.icons8.com/color/96/google-sheets.png"></div>
+      </div>
+      <div class="skills-track reverse">
+        <div class="skill-box" data-name="HTML"><img src="https://img.icons8.com/color/96/html-5--v1.png"></div>
+        <div class="skill-box" data-name="CSS"><img src="https://img.icons8.com/color/96/css3.png"></div>
+        <div class="skill-box" data-name="JS"><img src="https://img.icons8.com/color/96/javascript--v1.png"></div>
+        <div class="skill-box" data-name="Python"><img src="https://img.icons8.com/color/96/python.png"></div>
+        <div class="skill-box" data-name="Tailwind"><img src="https://img.icons8.com/color/96/tailwind_css.png"></div>
+        <div class="skill-box" data-name="Algebra"><img src="https://img.icons8.com/fluency/96/math.png"></div>
+        <div class="skill-box" data-name="Statistics"><img src="https://img.icons8.com/color/96/combo-chart--v1.png"></div>
+        <div class="skill-box" data-name="AI"><img src="https://img.icons8.com/fluency/96/artificial-intelligence.png"></div>
+        <div class="skill-box" data-name="SQL"><img src="https://img.icons8.com/color/96/sql.png"></div>
+        <div class="skill-box" data-name="Probability"><img src="https://img.icons8.com/color/96/dice.png"></div>
+        <div class="skill-box" data-name="Test Cases"><img src="https://img.icons8.com/fluency/96/test-passed.png"></div>
+      </div>
+    </section>
+  </div> <section id="projects" class="py-32 fade-up w-full">
+    <h2 class="text-4xl md:text-4xl font-bold mb-16 text-center text-white">Projects</h2>
+    
+    <div class="w-full px-4 md:pr-[120px] md:pl-[4%]">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+          <div class="h-[350px] overflow-hidden border-b border-[#222]">
+            <img src="image/project 1/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-10">
+            <a href="project1.html" class="hover:text-purple-500 transition">
+                <h3 class="text-xl font-bold mb-6">Manual Testing - nopCommerce</h3>
+            
+            </a>
+            <div class="flex flex-wrap gap-3">
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Manual Testing</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Case Design</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Execution</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Bug Report</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Google Sheets</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Expected Results</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Actual Results</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Status</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Summary Report</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+          <div class="h-[350px] overflow-hidden border-b border-[#222]">
+            <img src="image/project2/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-10">
+            <a href="project2.html" class="hover:text-purple-500 transition">
+                <h3 class="text-xl font-bold mb-6">API testing — JSONPlaceHolder</h3>
+            </a>
+            <div class="flex flex-wrap gap-3">
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Postman</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">REST API</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Endpoints</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Scripts</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Automation</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Validation</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Documentation</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Get Requests</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Post Requests</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">PUT Requests</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">DELETE Requests</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">JSON</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+          <div class="h-[350px] overflow-hidden border-b border-[#222]">
+            <img src="image/project3/crypto1.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-5">
+            <a href="project3.html" class="hover:text-purple-500 transition">
+              <div class="p-6 flex flex-col space-y-0.5">
+
+                <h3 class="text-lg font-bold mb-0.5">
+                    Nexus Crypto Quant Analysis & Backtesting Platform
+                </h3>
+
+                <div class="flex flex-wrap gap-2">
+                    <!-- skills -->
+                </div>
+
+            </div>
+            </a>
+            <div class="flex flex-wrap gap-3">
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Python</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">AI Student</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Data Analysis</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Quantitative Analysis</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Backtesting</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Pandas</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">NumPy</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Matplotlib</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Scikit-learn</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Data Visualization</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Statistical Analysis</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">streamlit</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Scipy</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">yfinance</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Plotly</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">cryptocurrency</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications" class="py-20 fade-up w-full">
+    <h2 class="text-2xl md:text-3xl font-bold mb-12 text-center text-white">Certifications</h2>
+    
+    <div class="w-full px-4 md:pr-[120px] md:pl-[4%]">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Certificate 1 -->
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
+          <div class="h-[250px] overflow-hidden border-b border-[#222]">
+            <img src="certificates/certificates_TAU.png" 
+                alt="TAU Certificate"
+                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
+              <span>TAU (via Applitools)</span>
+            </div>
+            <a href="certif1.html">
+              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition">
+                API Test Automation with Postman
+              </h3>
+            </a>
+            <a href="certif1.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
+              View Details →
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 2 -->
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
+          <div class="h-[250px] overflow-hidden border-b border-[#222]">
+            <img src="certificates/55df17ed.jpg" 
+                alt="C Programming Certificate"
+                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
+              <span>Mindluster Academy</span>
+            </div>
+            <a href="certif2.html">
+              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition cursor-pointer">
+                C programming from Scratch
+              </h3>
+            </a>
+            <a href="certif2.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
+              View Details →
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 3 -->
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
+          <div class="h-[250px] overflow-hidden border-b border-[#222]">
+            <img src="certificates/96b61d51.jpg" 
+                alt="Python Certificate"
+                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
+              <span>Mindluster Academy</span>
+            </div>
+            <a href="certif3.html">
+              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition cursor-pointer">
+                Python programming for Beginners
+              </h3>
+            </a>
+            <a href="certif3.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
+              View Details →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="py-20 fade-up w-full overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl md:text-5xl font-bold mb-16 text-center text-white">Recommendations</h2>
+
+      <div class="swiper mySwiper pb-12">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"Ali ddar m3ana khidma nadiya f-l-manual testing. Spotted bugs li kounna ghadi n-ghlet fihom f-l-production. Highly professional."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">Yassine El Amrani</h4>
+                  <p class="text-gray-500 text-xs">Founder of DevStudio Morocco</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"I worked with Ali on a freelance project for an e-commerce app. His API testing skills using Postman are top-notch."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">Othmane Tazi</h4>
+                  <p class="text-gray-500 text-xs">Freelance Web Developer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"Ali is a fast learner. He integrated perfectly with our QA team and improved our bug reporting process significantly."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/22.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">John Doe</h4>
+                  <p class="text-gray-500 text-xs">QA Team Lead at TechSolutions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"Detail-oriented and very committed. The test cases he writes are very clear and easy to follow even for developers."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/60.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">David Johnson</h4>
+                  <p class="text-gray-500 text-xs">Project Manager</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"Working with Ali was a pleasure. He has a great mindset for a tester, always curious and double-checking everything."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/11.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">Saad Alami</h4>
+                  <p class="text-gray-500 text-xs">Senior QA Automation Engineer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide h-auto">
+            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
+              <span class="text-purple-500 text-4xl mb-4">“</span>
+              <p class="text-gray-300 mb-8 flex-grow">"The quality of Ali's work is impressive. He helped us reach our release deadline with zero critical bugs."</p>
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/52.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
+                <div>
+                  <h4 class="text-white font-bold text-sm">Khalid Ait</h4>
+                  <p class="text-gray-500 text-xs">CEO at Moroccan Startups</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-20 fade-up w-full">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl md:text-6xl font-bold mb-16 text-center text-white">Get In Touch</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-[30px] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          <div class="relative bg-[#0B0B0F] rounded-[30px] overflow-hidden border border-gray-800">
+            <img src="imagprt.jpeg" alt="Ali Ennadafy" class="w-full h-[500px] object-cover">
+            <div class="absolute top-6 right-6 bg-black/50 backdrop-blur-md border border-green-500/50 px-4 py-1 rounded-full flex items-center gap-2">
+              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span class="text-white text-sm font-medium">Available for work</span>
+            </div>
+            <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black to-transparent">
+              <h3 class="text-2xl font-bold text-white">Ali Ennadafy</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <form action="#" class="space-y-4">
+            <div>
+              <label class="block text-gray-400 text-sm mb-2">Name</label>
+              <input type="text" placeholder="Your name" 
+                    class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all">
+            </div>
+            
+            <div>
+              <label class="block text-gray-400 text-sm mb-2">Email</label>
+              <input type="email" placeholder="your.email@example.com" 
+                    class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all">
+            </div>
+            
+            <div>
+              <label class="block text-gray-400 text-sm mb-2">Message</label>
+              <textarea placeholder="Your message..." rows="5" 
+                        class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all resize-none"></textarea>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2 group">
+              Send Message 
+              <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    },
+    autoplay: {
+      delay: 3000,
+    },
+  });
+</script>
+
+<style>
+  .swiper-pagination-bullet { background: #888; }
+  .swiper-pagination-bullet-active { background: #a855f7; }
+</style>
+
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("loader").style.display = "none";
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+      });
+    });
+
+    document.querySelectorAll(".fade-up").forEach(el => {
+      observer.observe(el);
+    });
+
+    const cursor = document.querySelector(".cursor");
+    document.addEventListener("mousemove", e => {
+      if (cursor) {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      }
+    });
+
+    lucide.createIcons();
+
+    document.querySelectorAll(".link").forEach(link => {
+      link.addEventListener("mouseenter", () => cursor.classList.add("cursor-grow"));
+      link.addEventListener("mouseleave", () => cursor.classList.remove("cursor-grow"));
+    });
+
+    const words = ["Software Tester", "AI Student"];
+    let i = 0, j = 0, isDeleting = false;
+    function type() {
+      let currentWord = words[i];
+      if (isDeleting) j--; else j++;
+      document.getElementById("typing").textContent = currentWord.substring(0, j);
+      if (!isDeleting && j === currentWord.length) {
+        isDeleting = true;
+        setTimeout(type, 1000);
+      } else if (isDeleting && j === 0) {
+        isDeleting = false;
+        i = (i + 1) % words.length;
+        setTimeout(type, 300);
+      } else {
+        setTimeout(type, isDeleting ? 50 : 100);
+      }
+    }
+    type();
+  </script>
+
+</body>
+</html>

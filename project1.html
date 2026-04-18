@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nopCommerce Testing - Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .module-card {
+            background: linear-gradient(145deg, #111115, #16161d);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .module-card:hover {
+            border-color: #a855f7;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+        }
+        .task-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .task-number {
+            background: #a855f7;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .learn-card {
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(168, 85, 247, 0.1);
+        }
+        p { line-height: 1.8; letter-spacing: 0.5px; color: #a1a1aa; }
+                h2, h3 { 
+            color: #ffffff; 
+        }
+        
+        .main-display {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumb-scroll { scrollbar-width: none; }
+        .thumb-scroll::-webkit-scrollbar { display: none; }
+        .thumb-item {
+            
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .thumb-item.active { border-color: #a855f7; opacity: 1; transform: scale(1.05); }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999; /* Bach t-bqa hiya l-fouqania ga3 */
+            background: rgba(11, 11, 15, 0.8); /* Background chwia chfaf */
+            backdrop-filter: blur(10px); /* Effect dyal d-djaj m-dbegh */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Bach l-Social Icons i-b9aw f-l-jenb dima */
+        .social-sidebar {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 9998;
+        }
+
+        /* Zid wa7d l-margin l-lmain bach l-navbar mat-ghttich 3la l-khedma */
+        main {
+            margin-top: 100px;
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Style dyal l-container bach i-koun kolchi f l-isre */
+        nav .flex-col {
+            align-items: flex-start;
+        }
+
+        /* Effect sghir l-arrow fach kat-hoveri */
+        .group:hover i {
+            color: #a855f7; /* Purple color */
+        }
+                .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+        }
+
+                .task-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* الخط الجانبي */
+        .task-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #a855f7;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        /* hover effect */
+        .task-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .task-item:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 10px 25px -10px rgba(168, 85, 247, 0.3);
+        }
+
+                .learn-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* line من التحت (أنعم من الجنب) */
+        .learn-card::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: #a855f7;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        /* hover */
+        .learn-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .learn-card:hover {
+            transform: translateY(-6px);
+            border-color: #a855f7;
+            box-shadow: 0 15px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+
+        
+    </style>
+</head>
+
+<body class="bg-[#0B0B0F] text-white font-sans">
+    <div class="custom-cursor"></div>
+
+    <div class="max-w-6xl mx-auto px-6">
+        <nav class="flex justify-between items-center py-6 fade-up max-w-6xl mx-auto px-6">
+            <div class="flex flex-col">
+                <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
+                
+                
+            </div>
+            <div class="space-x-6 text-sm text-gray-400">
+                <a href="#about" class="hover:text-white transition link">About</a>
+                <a href="#skills" class="hover:text-white transition link">Skills</a>
+                <a href="#projects" class="hover:text-white transition link">Projects</a>
+                <a href="#certifications" class="hover:text-white transition link">Certifications</a>
+                <a href="#contact" class="hover:text-white transition link">Contact</a>
+            </div>
+
+            <a href="Ali_Ennadafy_QA.pdf" target="_blank"
+                class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
+                Resume
+            </a>
+        </nav>
+    </div>
+
+    <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
+        <a href="https://github.com/coderaliennadafy" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+        </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+        </svg>
+        </a>
+        <a href="mailto:ennadafy@gmail.com"
+            class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
+            <i class="fas fa-envelope"></i>
+        </a>
+  </div>
+
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+        <div class="mb-6">
+            <a href="index.html#projects" class="flex items-center gap-2 text-gray-400 hover:text-white transition-all text-sm group">
+                <i class="fas fa-arrow-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
+                <span>Back to Projects</span>
+            </a>
+        </div>
+        <div class="rounded-[30px] overflow-hidden border border-gray-800 bg-[#111] mb-12 shadow-2xl">
+            <img src="image/project 1/1-cover.jpg" alt="Project Cover" class="w-full h-[450px] object-cover opacity-90">
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+            
+            <div class="w-full md:w-2/3 space-y-20">
+                <div>
+                    <h1 class="text-5xl font-bold mb-6">NopCommerce — Testing</h1>
+                    <p class="text-gray-400 text-xl leading-relaxed">
+                        I performed extensive manual testing for the nopCommerce platform, focusing on the user journey from product discovery to successful checkout.
+                    </p>
+                </div>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-10 text-white">Module-by-Module Testing Details</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">01. Registration</div>
+                            <p class="text-gray-400 text-sm">Tested the full user onboarding flow. Validated mandatory fields (Email, Password), account activation links, and error handling for duplicate emails or weak passwords to ensure only valid users can join the platform.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">02. Login</div>
+                            <p class="text-gray-400 text-sm">Verified secure access using multi-role credentials. Tested "Remember Me" functionality, password recovery via email, and account locking mechanisms after multiple failed attempts to protect user data.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">03. Logout & Session</div>
+                            <p class="text-gray-400 text-sm">Ensured that user sessions are properly terminated upon logout. Verified that back-button navigation doesn't expose sensitive account pages once the user has signed out.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">04. Session Expiry</div>
+                            <p class="text-gray-400 text-sm">Validated automatic timeout for inactive sessions. Tested if the system redirects users to the login page after a period of inactivity to maintain e-commerce security standards.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">05. Product Listing</div>
+                            <p class="text-gray-400 text-sm">Tested the display accuracy of products across categories. Verified grid/list view toggles, pagination, and ensured that out-of-stock items are labeled correctly to avoid customer confusion.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">06. Product Details</div>
+                            <p class="text-gray-400 text-sm">Verified that all specifications, prices, and high-res images load correctly. Tested variant selections (Size/Color) and ensured the "Add to Wishlist" and "Compare" features function as expected.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">07. Search & Filter</div>
+                            <p class="text-gray-400 text-sm">Tested the search algorithm for keyword accuracy. Validated advanced filters (Price Range, Brand, Rating) to ensure customers can find specific products quickly in a large catalog.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">08. Shopping Cart</div>
+                            <p class="text-gray-400 text-sm">Performed functional testing on quantity updates, item removal, and subtotal calculations. Verified that discount codes are applied correctly and reflect immediately in the total price.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">09. Checkout</div>
+                            <p class="text-gray-400 text-sm">The most critical flow. Tested the 6-step checkout process, including billing/shipping address validation, shipping method selection, and secure payment gateway integration.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">10. Order Confirmation</div>
+                            <p class="text-gray-400 text-sm">Verified the generation of Order IDs and success messages. Checked if the system sends a confirmation email with the correct order summary and receipt details to the user.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">11. Order History</div>
+                            <p class="text-gray-400 text-sm">Tested the "My Account" order section. Verified that users can track their order status (Pending/Processing/Shipped) and re-order previous items with a single click.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">12. User Profile</div>
+                            <p class="text-gray-400 text-sm">Tested the ability to update personal information, change passwords, and manage multiple shipping addresses. Verified data persistence across different devices.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-10">
+                        <h2 class="text-3xl font-bold">My Tasks</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">1</span>
+                            <p class="text-gray-300">Analyzed business requirements and user stories to identify critical test scenarios for the nopCommerce platform.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">2</span>
+                            <p class="text-gray-300">Designed and executed over 280+ comprehensive test cases covering end-to-end e-commerce workflows.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">3</span>
+                            <p class="text-gray-300">Performed GUI and Usability testing to ensure a seamless shopping experience across different screen resolutions.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">4</span>
+                            <p class="text-gray-300">Conducted Black-Box testing on core modules including Registration, Shopping Cart, and Checkout integration.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">5</span>
+                            <p class="text-gray-300">Documented and tracked software defects in a Test Summary Report, categorizing them by severity and priority.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">6</span>
+                            <p class="text-gray-300">Verified data integrity by validating database entries for new user registrations and order placements.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-10">
+                        <div class="p-2 bg-purple-500/20 rounded-lg"><span class="text-purple-500 text-xl">💡</span></div>
+                        <h2 class="text-3xl font-bold">What I Learned</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">The QA Mindset</h3>
+                            <p class="text-gray-400">As my first project in manual testing, I learned that testing isn't just about finding bugs—it's about understanding the user's journey. I realized that a successful tester needs to think like a customer while maintaining the technical rigor of a developer.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Test Case Prioritization</h3>
+                            <p class="text-gray-400">Managing 280+ test cases taught me the importance of prioritization. I learned how to identify "Smoke" and "Sanity" tests to ensure that the most critical features (like Checkout and Payment) are stable before diving into minor UI details.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Attention to Detail</h3>
+                            <p class="text-gray-400">I discovered that even the smallest misalignment in a UI or a missing validation message in a form can impact user trust. This project sharpened my eye for detail, especially when testing responsive layouts on different screen sizes.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Reporting & Documentation</h3>
+                            <p class="text-gray-400">I learned that a bug is only as good as its report. Documenting clear, reproducible steps and expected results in Google Sheets taught me how to communicate effectively with stakeholders and keep a project organized.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-purple-500">Project Screenshots (15)</h2>
+                    <div class="relative group w-full bg-[#111] rounded-[30px] overflow-hidden border border-gray-800 shadow-2xl">
+                        <div class="main-display">
+                            <img id="viewfinder" src="image/project 1/pic6.jpg" class="w-full h-full object-contain">
+                        </div>
+                        <button onclick="changeSlide(-1)" class="absolute left-5 top-1/2 -translate-y-1/2 p-4 bg-black/40 hover:bg-purple-600 rounded-full text-white opacity-0 group-hover:opacity-100 transition">&larr;</button>
+                        <button onclick="changeSlide(1)" class="absolute right-5 top-1/2 -translate-y-1/2 p-4 bg-black/40 hover:bg-purple-600 rounded-full text-white opacity-0 group-hover:opacity-100 transition">&rarr;</button>
+                    </div>
+                    <div id="thumbList" class="flex gap-4 mt-6 overflow-x-auto thumb-scroll py-2 px-1"></div>
+                </section>
+            </div>
+
+            <div class="w-full md:w-1/3 md:sticky md:top-8">
+                <div class="bg-[#111] border border-gray-800 rounded-3xl p-8 shadow-xl">
+                    <h4 class="text-gray-500 uppercase tracking-widest text-xs font-bold mb-6">Project Info</h4>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-sm text-gray-500">Tech Stack</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Manual Testing</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Google Sheets</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Total Test Cases</p>
+                            <p class="text-white font-bold text-xl">280+ Cases</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <section class="mt-32">
+        <h2 class="text-3xl font-bold mb-10">Related Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project 2/cover.jpg" 
+                        onerror="this.src='image/project3/crypto1.png'"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+               <div class="p-6 flex flex-col space-y-4">
+
+            <h3 class="text-lg font-bold">
+                Nexus Crypto Quant Analysis & Backtesting Platform
+            </h3>
+
+            <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Python</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Streamlit</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Pandas</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">NumPy</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Backtesting</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Quantitative Analysis</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Cryptocurrency</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Data Visualization</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">yFinance API</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">SciPy</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Plotly</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project 1/1-cover.jpg" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">Manual Testing - nopCommerce</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Cases</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Bug Reporting</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Google Sheets</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Excel</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Expected Results</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Actual Results</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Summary Report</span>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project2/1-cover.jpg" 
+                        onerror="this.src='https://via.placeholder.com/400x225?text=API+Testing'"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">API testing — JSONPlaceHolder</h3>
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Postman</span>
+                        <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-[10px]">GET</span>
+                        <span class="bg-green-500/10 text-green-400 px-2 py-1 rounded text-[10px]">POST</span>
+                        <span class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded text-[10px]">PUT</span>
+                        <span class="bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-md text-xs font-medium text-red-500">DELETE</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">API Testing</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">JSON</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Status codes</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Required fields</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response time</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Error handling</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response structure</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-32 mb-20">
+        <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
+            <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
+            <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
+                <span></span> Hire Me
+            </a>
+        </div>
+    </section>
+
+    </main>
+
+    <script>
+        const cursor = document.querySelector(".custom-cursor");
+
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.top = e.clientY + "px";
+            cursor.style.left = e.clientX + "px";
+        });
+        
+        const galleryImages = [
+            "image/project 1/pic1.png", "image/project 1/pic2.png", "image/project 1/pic3.png", 
+            "image/project 1/pic4.png", "image/project 1/pic5.png", "image/project 1/pic6.jpg", 
+            "image/project 1/pic7.jpg", "image/project 1/pic8.jpg", "image/project 1/pic9.jpg", 
+            "image/project 1/pic10.jpg", "image/project 1/pic11.jpg", "image/project 1/pic12.jpg", 
+            "image/project 1/pic13.jpg", "image/project 1/pic14.jpg", "image/project 1/pic15.png"
+        ];
+
+        let currentIdx = 0;
+        const viewfinder = document.getElementById('viewfinder');
+        const thumbList = document.getElementById('thumbList');
+
+        function initGallery() {
+            thumbList.innerHTML = ''; // Re-init bach maykonsh doubled
+            galleryImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = `thumb-item w-40 h-24 object-cover rounded-xl ${index === 0 ? 'active' : ''}`;
+                img.onclick = () => showImage(index);
+
+                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Error+Loading'; };
+                thumbList.appendChild(img);
+            });
+        }
+
+        function showImage(index) {
+            currentIdx = index;
+            viewfinder.src = galleryImages[currentIdx];
+            document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === currentIdx));
+        }
+
+        function changeSlide(dir) {
+            currentIdx = (currentIdx + dir + galleryImages.length) % galleryImages.length;
+            showImage(currentIdx);
+        }
+
+        initGallery();
+    </script>
+</body>
+</html>

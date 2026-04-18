@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Crypto Quant Analysis & Backtesting Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .module-card {
+            background: linear-gradient(145deg, #111115, #16161d);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .module-card:hover {
+            border-color: #a855f7;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+        }
+        .task-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .task-number {
+            background: #a855f7;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .learn-card {
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(168, 85, 247, 0.1);
+        }
+        p { line-height: 1.8; letter-spacing: 0.5px; color: #a1a1aa; }
+        h2, h3 { margin-bottom: 1.5rem; color: #ffffff; }
+        
+        .main-display {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumb-scroll { scrollbar-width: none; }
+        .thumb-scroll::-webkit-scrollbar { display: none; }
+        .thumb-item {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .thumb-item.active { border-color: #a855f7; opacity: 1; transform: scale(1.05); }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999; /* Bach t-bqa hiya l-fouqania ga3 */
+            background: rgba(11, 11, 15, 0.8); /* Background chwia chfaf */
+            backdrop-filter: blur(10px); /* Effect dyal d-djaj m-dbegh */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Bach l-Social Icons i-b9aw f-l-jenb dima */
+        .social-sidebar {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 9998;
+        }
+
+        /* Zid wa7d l-margin l-lmain bach l-navbar mat-ghttich 3la l-khedma */
+        main {
+            margin-top: 100px;
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Style dyal l-container bach i-koun kolchi f l-isre */
+        nav .flex-col {
+            align-items: flex-start;
+        }
+
+    
+        .group:hover i {
+            color: #a855f7; /* Purple color */
+        }
+                .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+        }
+
+                body {
+                    cursor: none;
+        }
+
+                .task-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* الخط الجانبي */
+        .task-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #a855f7;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        /* hover effect */
+        .task-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .task-item:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 10px 25px -10px rgba(168, 85, 247, 0.3);
+        }
+
+                .learn-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* line من التحت (أنعم من الجنب) */
+        .learn-card::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: #a855f7;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        /* hover */
+        .learn-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .learn-card:hover {
+            transform: translateY(-6px);
+            border-color: #a855f7;
+            box-shadow: 0 15px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+    </style>
+</head>
+
+<body class="bg-[#0B0B0F] text-white font-sans">
+    <div class="custom-cursor"></div>
+
+    <div class="max-w-6xl mx-auto px-6">
+        <nav class="flex justify-between items-center py-6 fade-up max-w-6xl mx-auto px-6">
+            <div class="flex flex-col">
+                <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
+                
+                
+            </div>
+            <div class="space-x-6 text-sm text-gray-400">
+                <a href="#about" class="hover:text-white transition link">About</a>
+                <a href="#skills" class="hover:text-white transition link">Skills</a>
+                <a href="#projects" class="hover:text-white transition link">Projects</a>
+                <a href="#certifications" class="hover:text-white transition link">Certifications</a>
+                <a href="#contact" class="hover:text-white transition link">Contact</a>
+            </div>
+
+            <a href="Ali_Ennadafy_QA.pdf" target="_blank"
+                class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
+                Resume
+            </a>
+        </nav>
+    </div>
+
+    <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
+        <a href="https://github.com/coderaliennadafy" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+        </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+        </svg>
+        </a>
+        <a href="mailto:ennadafy@gmail.com"
+            class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
+            <i class="fas fa-envelope"></i>
+        </a>
+  </div>
+
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+        <div class="mb-6">
+            <a href="index.html#projects" class="flex items-center gap-2 text-gray-400 hover:text-white transition-all text-sm group">
+                <i class="fas fa-arrow-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
+                <span>Back to Projects</span>
+            </a>
+        </div>
+        <div class="rounded-[30px] overflow-hidden border border-gray-800 bg-[#111] mb-12 shadow-2xl">
+            <img src="image/project3/crypto1.png" alt="Project Cover" class="w-full h-[450px] object-cover opacity-90">
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+            
+            <div class="w-full md:w-2/3 space-y-20">
+                <div>
+                    <h1 class="text-5xl font-bold mb-6">Nexus Crypto Quant Analysis & Backtesting Platform</h1>
+                    <p class="text-gray-400 text-xl leading-relaxed">
+                    Developed a quantitative analysis and backtesting platform for cryptocurrency trading strategies. 
+                    The project allows users to simulate trading performance using historical market data, evaluate strategy profitability, 
+                    and analyze key metrics such as returns, drawdown, and risk. Built with Python and data analysis libraries,
+                    the platform provides interactive visualizations to support data-driven decision making.
+                    </p>
+                </div>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-10 text-white">Module-by-Module Testing Details</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">01. Market Data Analysis</div>
+                            <p class="text-gray-400 text-sm"> Fetched real-time crypto data using APIs and analyzed price trends using Pandas</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">02. Strategy Backtesting</div>
+                            <p class="text-gray-400 text-sm">Developed and tested various trading strategies using historical data to evaluate their performance and profitability.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">03. Performance Metrics</div>
+                            <p class="text-gray-400 text-sm">Evaluated the performance of trading strategies using key metrics such as Sharpe ratio, Sortino ratio, and maximum drawdown.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">04. Data Visualization</div>
+                            <p class="text-gray-400 text-sm">Created interactive visualizations to display market data and strategy performance. Ensured that charts and graphs are properly formatted and provide meaningful insights.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">05. Technical Indicators</div>
+                            <p class="text-gray-400 text-sm">Calculated RSI, Moving Averages, and other indicators for decision-making.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">06. Strategy Selection</div>
+                            <p class="text-gray-400 text-sm">Tested different trading strategies (SMA Crossover, etc.) to ensure correct selection and execution. Verified that switching between strategies updates results dynamically without errors.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">07. Data Loading & Integration</div>
+                            <p class="text-gray-400 text-sm">Validated historical cryptocurrency data fetching (via API). Ensured data accuracy, correct formatting, and proper handling of missing or inconsistent data.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">08. Indicators Calculation</div>
+                            <p class="text-gray-400 text-sm">Implemented and validated technical indicators (e.g., Moving Averages), ensuring accurate calculations and correct representation in data visualizations.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">09. Backtesting Engine</div>
+                            <p class="text-gray-400 text-sm"> Validated core backtesting logic by simulating trades based on selected strategies. Ensured correct execution of buy/sell signals and accurate profit/loss calculation.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">10. Portfolio Performance</div>
+                            <p class="text-gray-400 text-sm">Tested calculation of portfolio metrics including total return, capital evolution, and profit percentage. Verified results match expected outputs.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">11. Risk Metrics (Drawdown)</div>
+                            <p class="text-gray-400 text-sm">Validated drawdown calculation and visualization. Ensured maximum loss periods are correctly identified and displayed in charts.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">12. Chart Visualization</div>
+                            <p class="text-gray-400 text-sm">Developed and tested interactive chart visualizations for financial data, ensuring accurate rendering, real-time responsiveness, and clear representation of key performance metrics and trading signals.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">13. User Inputs & Parameters</div>
+                            <p class="text-gray-400 text-sm">Validated user inputs such as initial capital, strategy parameters, and transaction fees. Ensured input validation and real-time updates in results.</p>
+                        </div>
+                        <div class="module-card p-6 rounded-2xl">
+                            <div class="text-purple-500 font-bold mb-2">14.Transaction Simulation </div>
+                            <p class="text-gray-400 text-sm">Developed and tested simulation of trades including entry/exit points and fees. Verified correct application of trading rules and accurate balance updates.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-10">
+                        <h2 class="text-3xl font-bold">My Tasks</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">1</span>
+                            <p class="text-gray-300">Analyzed cryptocurrency datasets using Pandas and NumPy to identify market trends and patterns.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">2</span>
+                            <p class="text-gray-300">Built and tested a backtesting engine to simulate and evaluate trading strategies using historical data.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">3</span>
+                            <p class="text-gray-300">Integrated APIs (Yahoo Finance / Crypto APIs) to fetch and process real-time market data.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">4</span>
+                            <p class="text-gray-300">Designed and developed interactive dashboards using Streamlit for data exploration and analysis.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">5</span>
+                            <p class="text-gray-300">Created dynamic visual charts to display price trends, indicators, and trading signals.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">6</span>
+                            <p class="text-gray-300">Optimized application performance to efficiently handle large datasets and computations.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">7</span>
+                            <p class="text-gray-300">Implemented and validated technical indicators such as Moving Averages and RSI for trading analysis.</p>
+                        </div>
+                        <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">8</span>
+                            <p class="text-gray-300">Tested strategy performance by evaluating metrics such as ROI, drawdown, and risk levels.</p>
+                        </div>
+                         <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">9</span>
+                            <p class="text-gray-300">Ensured data accuracy and consistency between API responses and visualized results.</p>
+                        </div>
+                         <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">10</span>
+                            <p class="text-gray-300">Performed debugging and issue resolution to improve system reliability and stability.</p>
+                        </div>
+                         <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">11</span>
+                            <p class="text-gray-300">Validated user inputs (capital, parameters, fees) to ensure correct calculations and outputs.</p>
+                        </div>
+                         <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">12</span>
+                            <p class="text-gray-300">Enhanced user experience by improving UI responsiveness and interaction flow.</p>
+                        </div>
+                         <div class="task-item p-5 rounded-2xl flex items-start gap-4">
+                            <span class="task-number shrink-0">13</span>
+                            <p class="text-gray-300">Developed and validated the backtesting logic by comparing expected and actual results to ensure accuracy, consistency, and reliability of trading strategies.</p>
+                        </div>
+                        
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-10">
+                        <div class="p-2 bg-purple-500/20 rounded-lg"><span class="text-purple-500 text-xl"></span></div>
+                        <h2 class="text-3xl font-bold">What I Learned</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Quantitative Analysis</h3>
+                            <p class="text-gray-400"> Gained a strong understanding of analyzing financial data and applying quantitative methods to evaluate trading strategies and market trends.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Backtesting & Strategy Validation</h3>
+                            <p class="text-gray-400">Learned how to design, test, and validate trading strategies using historical data to measure performance, accuracy, and risk.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400"> API Integration & Data Handling</h3>
+                            <p class="text-gray-400">Improved skills in working with APIs to fetch real-time data, process datasets, and ensure data accuracy and consistency.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Technical Indicators</h3>
+                            <p class="text-gray-400">Learned how to implement and validate technical indicators such as Moving Averages and RSI for data-driven trading decisions.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Data Visualization</h3>
+                            <p class="text-gray-400">Enhanced ability to create interactive and meaningful visualizations to analyze price movements, trends, and performance metrics.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Performance Optimization</h3>
+                            <p class="text-gray-400">Learned how to optimize data processing and improve application performance when working with large datasets.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400"> QA Mindset in Data Projects</h3>
+                            <p class="text-gray-400">Developed a testing mindset by validating results, comparing expected vs actual outputs, and ensuring accuracy in trading simulations.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Debugging & Problem Solving</h3>
+                            <p class="text-gray-400">Strengthened problem-solving skills by identifying issues in logic, data inconsistencies, and improving system reliability.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Risk Management</h3>
+                            <p class="text-gray-400">Learned how to evaluate and manage trading risks by analyzing metrics such as drawdown, volatility, and capital exposure.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Trading Logic & Signal Interpretation</h3>
+                            <p class="text-gray-400">Developed a deeper understanding of trading signals (buy/sell) and how strategy logic translates into real market actions.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <h3 class="text-xl font-semibold text-purple-400">Performance Optimization</h3>
+                            <p class="text-gray-400">Learned how to optimize data processing and improve application performance when working with large datasets.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mt-20">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-white-500">Project Screenshots (20)</h2>
+                    <div class="relative group w-full bg-[#111] rounded-[30px] overflow-hidden border border-gray-800 shadow-2xl">
+                        <div class="main-display">
+                            <img id="viewfinder" src="image/project3/crypto1.png" class="w-full h-full object-contain">
+                        </div>
+                        <button onclick="changeSlide(-1)" class="absolute left-5 top-1/2 -translate-y-1/2 p-4 bg-black/40 hover:bg-purple-600 rounded-full text-white opacity-0 group-hover:opacity-100 transition">&larr;</button>
+                        <button onclick="changeSlide(1)" class="absolute right-5 top-1/2 -translate-y-1/2 p-4 bg-black/40 hover:bg-purple-600 rounded-full text-white opacity-0 group-hover:opacity-100 transition">&rarr;</button>
+                    </div>
+                    <div id="thumbList" class="flex gap-4 mt-6 overflow-x-auto thumb-scroll py-2 px-1"></div>
+                </section>
+            </div>
+
+            <div class="w-full md:w-1/3 md:sticky md:top-8">
+                <div class="bg-[#111] border border-gray-800 rounded-3xl p-8 shadow-xl">
+                    <h4 class="text-gray-500 uppercase tracking-widest text-xs font-bold mb-6">Project Info</h4>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-sm text-gray-500">Tech Stack</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Python</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Streamlit</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Pandas</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">NumPy</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">SciPy</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">plotly.graph_objects</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">yFinance</span>                                
+
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <section class="mt-32">
+        <h2 class="text-3xl font-bold mb-10">Related Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project 2/cover.jpg" 
+                        onerror="this.src='image/project3/crypto1.png'"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">Nexus Crypto Quant Analysis & Backtesting Platform</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Python</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Streamlit</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Pandas</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">NumPy</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Backtesting</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Quantitative Analysis</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Cryptocurrency</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Data Visualization</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">yFinance API</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">SciPy</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Plotly</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project 1/1-cover.jpg" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">Manual Testing - nopCommerce</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Cases</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Bug Reporting</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Google Sheets</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Excel</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Expected Results</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Actual Results</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Summary Report</span>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="image/project2/1-cover.jpg" 
+                        onerror="this.src='https://via.placeholder.com/400x225?text=API+Testing'"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">API testing — JSONPlaceHolder</h3>
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Postman</span>
+                        <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-[10px]">GET</span>
+                        <span class="bg-green-500/10 text-green-400 px-2 py-1 rounded text-[10px]">POST</span>
+                        <span class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded text-[10px]">PUT</span>
+                        <span class="bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-md text-xs font-medium text-red-500">DELETE</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">API Testing</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">JSON</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Status codes</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Required fields</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response time</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Error handling</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response structure</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-32 mb-20">
+        <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
+            <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
+            <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
+                <span>Hire Me</span>
+            </a>
+        </div>
+    </section>
+
+    </main>
+
+    <script>
+        
+        const cursor = document.querySelector(".custom-cursor");
+
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.top = e.clientY + "px";
+            cursor.style.left = e.clientX + "px";
+        });
+
+        
+        const galleryImages = [
+            "image/project3/pic1.png", "image/project3/pic2.png", "image/project3/pic3.png", "image/project3/pic4.png", "image/project3/pic5.png", "image/project3/pic6.png",
+             "image/project3/pic7.png", "image/project3/pic8.png", "image/project3/pic9.png", "image/project3/pic10.png", "image/project3/pic11.png", "image/project3/pic12.png",
+             "image/project3/pic13.png", "image/project3/pic14.png", "image/project3/pic15.png", "image/project3/pic16.png", "image/project3/pic17.png", "image/project3/pic18.png",
+              "image/project3/pic19.png","image/project3/pic20.png"
+        ];
+
+        let currentIdx = 0;
+        const viewfinder = document.getElementById('viewfinder');
+        const thumbList = document.getElementById('thumbList');
+
+        function initGallery() {
+            thumbList.innerHTML = ''; // Re-init bach maykonsh doubled
+            galleryImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = `thumb-item w-40 h-24 object-cover rounded-xl ${index === 0 ? 'active' : ''}`;
+                img.onclick = () => showImage(index);
+                // Ila kant chi tsouira makhdamash, had l-line kat-khliha t-ban placeholder
+                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Error+Loading'; };
+                thumbList.appendChild(img);
+            });
+        }
+
+        function showImage(index) {
+            currentIdx = index;
+            viewfinder.src = galleryImages[currentIdx];
+            document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === currentIdx));
+        }
+
+        function changeSlide(dir) {
+            currentIdx = (currentIdx + dir + galleryImages.length) % galleryImages.length;
+            showImage(currentIdx);
+        }
+
+        initGallery();
+    </script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Crypto Quant Analysis & Backtesting Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .module-card {
+            background: linear-gradient(145deg, #111115, #16161d);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .module-card:hover {
+            border-color: #a855f7;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+        }
+        .task-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .task-number {
+            background: #a855f7;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .learn-card {
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(168, 85, 247, 0.1);
+        }
+        p { line-height: 1.8; letter-spacing: 0.5px; color: #a1a1aa; }
+        h2, h3 { margin-bottom: 1.5rem; color: #ffffff; }
+        
+        .main-display {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumb-scroll { scrollbar-width: none; }
+        .thumb-scroll::-webkit-scrollbar { display: none; }
+        .thumb-item {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .thumb-item.active { border-color: #a855f7; opacity: 1; transform: scale(1.05); }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999; /* Bach t-bqa hiya l-fouqania ga3 */
+            background: rgba(11, 11, 15, 0.8); /* Background chwia chfaf */
+            backdrop-filter: blur(10px); /* Effect dyal d-djaj m-dbegh */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Bach l-Social Icons i-b9aw f-l-jenb dima */
+        .social-sidebar {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 9998;
+        }
+
+        /* Zid wa7d l-margin l-lmain bach l-navbar mat-ghttich 3la l-khedma */
+        main {
+            margin-top: 100px;
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Bach l-content may-tghthach b l-navbar */
+        main {
+            padding-top: 80px; 
+        }
+
+        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .social-sidebar a {
+            color: #6b7280;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .social-sidebar a:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+        }
+        /* Style dyal l-container bach i-koun kolchi f l-isre */
+        nav .flex-col {
+            align-items: flex-start;
+        }
+
+        /* Effect sghir l-arrow fach kat-hoveri */
+        .group:hover i {
+            color: #a855f7; /* Purple color */
+        }
+                .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+        }
+
+        body {
+            cursor: none;
+        }
+    </style>
+</head>
+
+<body class="bg-[#0B0B0F] text-white font-sans">
+    <div class="custom-cursor"></div>
+
+    <div class="max-w-6xl mx-auto px-6">
+        <nav class="flex justify-between items-center py-6 fade-up max-w-6xl mx-auto px-6">
+            <div class="flex flex-col">
+                <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
+                
+                
+            </div>
+            <div class="space-x-6 text-sm text-gray-400">
+                <a href="#about" class="hover:text-white transition link">About</a>
+                <a href="#skills" class="hover:text-white transition link">Skills</a>
+                <a href="#projects" class="hover:text-white transition link">Projects</a>
+                <a href="#certifications" class="hover:text-white transition link">Certifications</a>
+                <a href="#contact" class="hover:text-white transition link">Contact</a>
+            </div>
+
+            <a href="Ali_Ennadafy_QA.pdf" target="_blank"
+                class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
+                Resume
+            </a>
+        </nav>
+    </div>
+
+    <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
+        <a href="https://github.com/coderaliennadafy" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+        </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
+        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+        </svg>
+        </a>
+        <a href="mailto:ennadafy@gmail.com"
+            class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
+            <i class="fas fa-envelope"></i>
+        </a>
+  </div>
+
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+        <div class="mb-6">
+            <a href="index.html#certifications" class="flex items-center gap-2 text-gray-400 hover:text-white transition-all text-sm group">
+                <i class="fas fa-arrow-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
+                <span>Back to Certifications</span>
+            </a>
+        </div>
+        <div class="rounded-[30px] overflow-hidden border border-gray-800 bg-[#111] mb-12 shadow-2xl">
+            <img src="certificates/certificates_TAU.png" alt="Project Cover" class="w-full h-[700px] object-cover opacity-90">
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+            
+            <div class="w-full md:w-2/3 space-y-20">
+                <div>
+                    <h1 class="text-5xl font-bold mb-6">API Test Automation with Postman</h1>
+                    <p class="text-gray-400 text-xl leading-relaxed">
+                    This certification validates my knowledge of API testing using Postman. 
+                    I learned how to work with REST APIs by sending different types of requests (GET, POST, PUT, DELETE), 
+                    analyzing responses, and verifying status codes and data accuracy. 
+                    The course also covered test case creation, error handling, and basic automation using Postman scripts 
+                    to ensure API reliability and performance.
+                    </p>
+                </div>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-10">
+                        <div class="p-2 bg-purple-500/20 rounded-lg"><span class="text-purple-500 text-xl"></span></div>
+                        <h2 class="text-3xl font-bold">What I Learned</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400"> Installed and configured Postman for API testing.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Explored Postman interface and workspace management</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400"> Imported and organized API collections and environments</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Created and executed HTTP requests (GET, POST, PUT, DELETE)</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Validated API responses using status codes, headers, and body.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Implemented automated tests using JavaScript in Postman</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Created and used mock servers for testing APIs</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400"> Monitored APIs using Postman monitors for scheduled testing.</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Used Newman CLI to run collections from command line</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Managed environments and variables for dynamic testing</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Tested error handling and edge cases in APIs</p>
+                        </div>
+                        <div class="learn-card p-8 rounded-[30px] space-y-4">
+                            <p class="text-gray-400">Gained hands-on experience with real-world API testing workflows</p>
+                        </div>
+                    </div>
+                </section>
+
+                
+            </div>
+
+        </div>
+
+    <section class="mt-32">
+        <h2 class="text-3xl font-bold mb-10">Related Certifications</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="certificates/55df17ed.jpg" 
+                        onerror="this.src='image/project3/crypto1.png'"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">C programming from Scratch</h3>
+                    
+                </div>
+            </div>
+
+            <div class="module-card rounded-[25px] overflow-hidden group">
+                <div class="aspect-video overflow-hidden bg-gray-900">
+                    <img src="certificates/96b61d51.jpg" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-3">Python programming Beginner</h3>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="mt-32 mb-20">
+        <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
+            <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
+            <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
+                <span>Hire Me</span>
+            </a>
+        </div>
+    </section>
+
+    </main>
+
+    <script>
+        const cursor = document.querySelector(".custom-cursor");
+
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.top = e.clientY + "px";
+            cursor.style.left = e.clientX + "px";
+        });
+
+        let currentIdx = 0;
+        const viewfinder = document.getElementById('viewfinder');
+        const thumbList = document.getElementById('thumbList');
+
+        function initGallery() {
+            thumbList.innerHTML = ''; // Re-init bach maykonsh doubled
+            galleryImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = `thumb-item w-40 h-24 object-cover rounded-xl ${index === 0 ? 'active' : ''}`;
+                img.onclick = () => showImage(index);
+                // Ila kant chi tsouira makhdamash, had l-line kat-khliha t-ban placeholder
+                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Error+Loading'; };
+                thumbList.appendChild(img);
+            });
+        }
+
+        function showImage(index) {
+            currentIdx = index;
+            viewfinder.src = galleryImages[currentIdx];
+            document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === currentIdx));
+        }
+
+        function changeSlide(dir) {
+            currentIdx = (currentIdx + dir + galleryImages.length) % galleryImages.length;
+            showImage(currentIdx);
+        }
+
+        initGallery();
+    </script>
+</body>
+</html>
