@@ -152,10 +152,28 @@
       scroll-behavior: smooth;
     }
 
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
   </style>
 </head>
 
 <body class="bg-[#0B0B0F] text-white font-sans">
+  <section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-b from-black to-gray-900 text-white">
+  <h1 class="text-4xl md:text-6xl font-bold mb-4">
+    Hi, I'm Ali Ennadafy 👋
+  </h1>
+
+  <p class="text-gray-400 max-w-xl mb-6">
+    I build modern web applications and data-driven platforms with clean design and strong performance.
+  </p>
+
+  <div class="flex gap-4">
+    <a href="#projects" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 transition">View Projects</a>
+    <a href="#contact" class="border border-gray-600 px-6 py-2 rounded-lg hover:bg-gray-800 transition">Contact Me</a>
+  </div>
+</section>
 
   <div id="loader">
     <div class="loader-circle"></div>
@@ -205,8 +223,8 @@
           <span id="typing" class="text-white text-5xl md:text-7xl"></span>
           <span class="text-purple-400 text-3xl md:text-5xl">]</span>
         </h1>
-        <p class="mt-6 text-gray-400 text-lg">
-          Specialized in Manual & API Testing. I design test cases and find critical bugs to ensure high-quality applications.
+        <p class="mt-8 text-gray-400 text-lg">
+          Software Tester | Manual & API Testing | Ensuring quality through precise testing and bug detection
         </p>
         <div class="mt-10">
           <a href="#projects"
@@ -285,36 +303,37 @@
         <div class="skill-box" data-name="Test Cases"><img src="https://img.icons8.com/fluency/96/test-passed.png"></div>
       </div>
     </section>
+
+    
   </div> <section id="projects" class="py-32 fade-up w-full">
     <h2 class="text-4xl md:text-4xl font-bold mb-16 text-center text-white">Projects</h2>
     
     <div class="w-full px-4 md:pr-[120px] md:pl-[4%]">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
-          <div class="h-[350px] overflow-hidden border-b border-[#222]">
+     <div class="flex gap-8 overflow-x-auto scroll-smooth px-4">
+      
+          <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">          <div class="h-[350px] overflow-hidden border-b border-[#222]">
             <img src="image/project 1/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
           </div>
           <div class="p-10">
             <a href="project1.html" class="hover:text-purple-500 transition">
-                <h3 class="text-xl font-bold mb-6">Manual Testing - nopCommerce</h3>
+              <h3 class="text-xl font-bold mb-6">
+                Manual Testing - nopCommerce
+              </h3>
+            </a>
             
             </a>
             <div class="flex flex-wrap gap-3">
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Manual Testing</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Case Design</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Execution</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Bug Report</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Google Sheets</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Expected Results</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Actual Results</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Status</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Summary Report</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Cases</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Bug Reporting</span>
+              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+5</span>
             </div>
           </div>
         </div>
 
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+        
+        <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+          
           <div class="h-[350px] overflow-hidden border-b border-[#222]">
             <img src="image/project2/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
           </div>
@@ -325,21 +344,15 @@
             <div class="flex flex-wrap gap-3">
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Postman</span>
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">REST API</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Endpoints</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">JavaScript</span>
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Scripts</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Automation</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Validation</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">API Documentation</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Get Requests</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Post Requests</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">PUT Requests</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">DELETE Requests</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">JSON</span>
+              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+7</span>
             </div>
           </div>
         </div>
 
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+        
+        <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">       
           <div class="h-[350px] overflow-hidden border-b border-[#222]">
             <img src="image/project3/crypto1.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
           </div>
@@ -352,34 +365,47 @@
                 </h3>
 
                 <div class="flex flex-wrap gap-2">
-                    <!-- skills -->
                 </div>
 
             </div>
             </a>
             <div class="flex flex-wrap gap-3">
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Python</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">AI Student</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Data Analysis</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Quantitative Analysis</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Backtesting</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Pandas</span>
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">NumPy</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Pandas</span>
               <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Matplotlib</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Scikit-learn</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Data Visualization</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Statistical Analysis</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">streamlit</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Scipy</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">yfinance</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Plotly</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">cryptocurrency</span>
-            </div>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Backtesting</span>
+              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+7</span>
+              
           </div>
         </div>
-
       </div>
+
+      <a href="project4.html" class="min-w-[320px] max-w-[350px] flex-shrink-0 snap-start">
+        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+
+          <div class="h-[350px] overflow-hidden border-b border-[#222]">
+            <img src="portfolio_pic/Screenshot 2026-04-19 150740.png"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          </div>
+
+          <div class="p-10">
+            <h3 class="text-xl font-bold mb-6 group-hover:text-purple-400 transition">
+              My Portfolio
+            </h3>
+
+            <div class="flex flex-wrap gap-3">
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 hover:bg-[#a855f7] hover:text-white">React</span>
+              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 hover:bg-[#a855f7] hover:text-white">API</span>
+            </div>
+          </div>
+
+        </div>
+      </a>
     </div>
+
+     
+    
   </section>
 
   <section id="certifications" class="py-20 fade-up w-full">
@@ -683,6 +709,16 @@
       }
     }
     type();
+
+    function scrollProjects(direction) {
+        const container = document.getElementById('projectsContainer');
+
+        const cardWidth = 370; // عرض card + gap
+        container.scrollBy({
+          left: direction * cardWidth,
+          behavior: 'smooth'
+        });
+      }
   </script>
 
 </body>

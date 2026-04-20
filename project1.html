@@ -301,7 +301,7 @@
             
             <div class="w-full md:w-2/3 space-y-20">
                 <div>
-                    <h1 class="text-5xl font-bold mb-6">NopCommerce — Testing</h1>
+                    <h1 class="text-5xl font-bold mb-6">Manual Testing - nopCommerce</h1>
                     <p class="text-gray-400 text-xl leading-relaxed">
                         I performed extensive manual testing for the nopCommerce platform, focusing on the user journey from product discovery to successful checkout.
                     </p>
@@ -419,7 +419,7 @@
                 </section>
 
                 <section class="mt-20">
-                    <h2 class="text-3xl font-bold mb-8 text-center text-purple-500">Project Screenshots (15)</h2>
+                    <h2 class="text-3xl font-bold mb-8 text-center text-white">Project Screenshots (15)</h2>
                     <div class="relative group w-full bg-[#111] rounded-[30px] overflow-hidden border border-gray-800 shadow-2xl">
                         <div class="main-display">
                             <img id="viewfinder" src="image/project 1/pic6.jpg" class="w-full h-full object-contain">
@@ -436,10 +436,15 @@
                     <h4 class="text-gray-500 uppercase tracking-widest text-xs font-bold mb-6">Project Info</h4>
                     <div class="space-y-6">
                         <div>
-                            <p class="text-sm text-gray-500">Tech Stack</p>
                             <div class="flex flex-wrap gap-2 mt-2">
                                 <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Manual Testing</span>
                                 <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Google Sheets</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Test Cases Design</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Bug Reporting</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Test Execution</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Expected Results</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Actual Results</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-md text-xs text-white">Status</span>
                             </div>
                         </div>
                         <div>
@@ -453,93 +458,127 @@
 
     <section class="mt-32">
         <h2 class="text-3xl font-bold mb-10">Related Projects</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            <!-- Project 1 -->
+            <a href="project3.html" class="block cursor-pointer">
             <div class="module-card rounded-[25px] overflow-hidden group">
-                <div class="aspect-video overflow-hidden bg-gray-900">
-                    <img src="image/project 2/cover.jpg" 
-                        onerror="this.src='image/project3/crypto1.png'"
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                <div class="aspect-video overflow-hidden bg-gray-900 relative">
+                <img src="image/project 2/cover.jpg" 
+                    onerror="this.src='image/project3/crypto1.png'"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                <!-- overlay -->
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition"></div>
                 </div>
-               <div class="p-6 flex flex-col space-y-4">
 
-            <h3 class="text-lg font-bold">
-                Nexus Crypto Quant Analysis & Backtesting Platform
-            </h3>
+                <div class="p-6 flex flex-col space-y-4">
 
-            <div class="flex flex-wrap gap-2">
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Python</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Streamlit</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Pandas</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">NumPy</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Backtesting</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Quantitative Analysis</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Cryptocurrency</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Data Visualization</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">yFinance API</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">SciPy</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Plotly</span>
-                    </div>
+                <h3 class="text-lg font-bold group-hover:text-purple-400 transition duration-300">
+                    Nexus Crypto Quant Analysis & Backtesting Platform
+                </h3>
+
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Python</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Streamlit</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Pandas</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">NumPy</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Backtesting</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Quantitative Analysis</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Cryptocurrency</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Data Visualization</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">yFinance API</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">SciPy</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Plotly</span>
+                </div>
+
                 </div>
             </div>
-
-            <div class="module-card rounded-[25px] overflow-hidden group">
-                <div class="aspect-video overflow-hidden bg-gray-900">
-                    <img src="image/project 1/1-cover.jpg" 
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-lg font-bold mb-3">Manual Testing - nopCommerce</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Cases</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Bug Reporting</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Google Sheets</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Excel</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Expected Results</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Actual Results</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Test Summary Report</span>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="module-card rounded-[25px] overflow-hidden group">
-                <div class="aspect-video overflow-hidden bg-gray-900">
-                    <img src="image/project2/1-cover.jpg" 
-                        onerror="this.src='https://via.placeholder.com/400x225?text=API+Testing'"
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-lg font-bold mb-3">API testing — JSONPlaceHolder</h3>
-                    <div class="flex flex-wrap gap-2">
-
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Postman</span>
-                        <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-[10px]">GET</span>
-                        <span class="bg-green-500/10 text-green-400 px-2 py-1 rounded text-[10px]">POST</span>
-                        <span class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded text-[10px]">PUT</span>
-                        <span class="bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-md text-xs font-medium text-red-500">DELETE</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">API Testing</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">JSON</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Status codes</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Required fields</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response time</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Error handling</span>
-                        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response structure</span>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="mt-32 mb-20">
-        <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
-            <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
-            <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
-            <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
-                <span></span> Hire Me
             </a>
+
+<a href="project1.html" class="block cursor-pointer h-full">
+  <div class="module-card rounded-[25px] overflow-hidden group h-full flex flex-col">
+
+    <!-- IMAGE -->
+    <div class="aspect-video overflow-hidden bg-gray-900 relative">
+      <img src="portfolio_pic/Screenshot 2026-04-19 150740.png" 
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+      <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="p-6 flex flex-col flex-grow space-y-4">
+
+      <!-- TITLE -->
+      <h3 class="text-lg font-bold group-hover:text-purple-400 transition duration-300">
+        My Portfolio
+      </h3>
+
+      <!-- TAGS -->
+      <div class="flex flex-wrap gap-2 mt-auto">
+        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">HTML5</span>
+        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">CSS3</span>
+        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">JavaScript</span>
+        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Tailwind CSS</span>
+        <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">AOS (Animate On Scroll)</span>
+      </div>
+
+    </div>
+
+  </div>
+</a>
+
+            <!-- Project 3 -->
+            <a href="project2.html" class="block cursor-pointer">
+            <div class="module-card rounded-[25px] overflow-hidden group">
+
+                <div class="aspect-video overflow-hidden bg-gray-900 relative">
+                <img src="image/project2/1-cover.jpg" 
+                    onerror="this.src='https://via.placeholder.com/400x225?text=API+Testing'"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition"></div>
+                </div>
+
+                <div class="p-6 flex flex-col space-y-4">
+                <h3 class="text-lg font-bold group-hover:text-purple-400 transition duration-300">
+
+                    API testing — JSONPlaceHolder
+                </h3>
+
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Postman</span>
+                    <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-[10px]">GET</span>
+                    <span class="bg-green-500/10 text-green-400 px-2 py-1 rounded text-[10px]">POST</span>
+                    <span class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded text-[10px]">PUT</span>
+                    <span class="bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-md text-xs font-medium text-red-500">DELETE</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">API Testing</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">JSON</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Status codes</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Required fields</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response time</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Error handling</span>
+                    <span class="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-400">Response structure</span>
+                </div>
+
+                </div>
+            </div>
+            </a>
+
         </div>
+        </section>
+
+        <section class="mt-32 mb-20">
+            <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
+                <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
+                <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
+                <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
+                    <span></span> Hire Me
+                </a>
+            </div>
     </section>
 
     </main>
