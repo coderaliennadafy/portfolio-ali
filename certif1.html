@@ -1,378 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus Crypto Quant Analysis & Backtesting Platform</title>
+<title>API Test Automation with Postman · Ali Ennadafy</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07070a;
+    --surface: #0f0f14;
+    --border: #1a1a24;
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.12);
+    --white: #f0eef8;
+    --gray: #6b6880;
+  }
 
-    <style>
-        .module-card {
-            background: linear-gradient(145deg, #111115, #16161d);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        .module-card:hover {
-            border-color: #a855f7;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
-        }
-        .task-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
-        .task-number {
-            background: #a855f7;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .learn-card {
-            background: linear-gradient(145deg, rgba(168, 85, 247, 0.05), rgba(0, 0, 0, 0));
-            border: 1px solid rgba(168, 85, 247, 0.1);
-        }
-        p { line-height: 1.8; letter-spacing: 0.5px; color: #a1a1aa; }
-        h2, h3 { margin-bottom: 1.5rem; color: #ffffff; }
-        
-        .main-display {
-            aspect-ratio: 16 / 9;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .thumb-scroll { scrollbar-width: none; }
-        .thumb-scroll::-webkit-scrollbar { display: none; }
-        .thumb-item {
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            opacity: 0.6;
-            flex-shrink: 0;
-        }
-        .thumb-item.active { border-color: #a855f7; opacity: 1; transform: scale(1.05); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 9999; /* Bach t-bqa hiya l-fouqania ga3 */
-            background: rgba(11, 11, 15, 0.8); /* Background chwia chfaf */
-            backdrop-filter: blur(10px); /* Effect dyal d-djaj m-dbegh */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    cursor: none;
+    overflow-x: hidden;
+  }
 
-        /* Bach l-Social Icons i-b9aw f-l-jenb dima */
-        .social-sidebar {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 9998;
-        }
+  h1, h2, h3, h4, nav { font-family: 'Syne', sans-serif; }
 
-        /* Zid wa7d l-margin l-lmain bach l-navbar mat-ghttich 3la l-khedma */
-        main {
-            margin-top: 100px;
-        }
-        /* Bach l-content may-tghthach b l-navbar */
-        main {
-            padding-top: 80px; 
-        }
+  .cursor {
+    position: fixed;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--purple);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, background .2s;
+    z-index: 10000;
+    mix-blend-mode: difference;
+  }
+  .cursor.grow { width: 36px; height: 36px; background: var(--purple-dim); }
 
-        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
-        .social-sidebar {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px 10px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 100;
-        }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(7,7,10,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--white); font-family: 'Syne', sans-serif; }
+  .nav-logo span { color: var(--purple); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--gray); text-decoration: none; transition: color .2s;
+    font-family: 'Syne', sans-serif;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    font-family: 'Syne', sans-serif; font-size: .8rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: .5rem 1.4rem;
+    border: 1px solid var(--purple); color: var(--purple);
+    border-radius: 99px; text-decoration: none;
+    transition: background .2s, color .2s;
+  }
+  .nav-cta:hover { background: var(--purple); color: #fff; }
 
-        .social-sidebar a {
-            color: #6b7280;
-            font-size: 18px;
-            transition: 0.3s;
-        }
+  .social-bar {
+    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: .8rem; z-index: 50;
+  }
+  .social-bar a {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 50%;
+    color: var(--gray); transition: border-color .2s, color .2s, box-shadow .2s;
+    text-decoration: none;
+  }
+  .social-bar a:hover {
+    border-color: var(--purple); color: var(--purple);
+    box-shadow: 0 0 14px rgba(168,85,247,.4);
+  }
 
-        .social-sidebar a:hover {
-            color: #a855f7;
-            transform: scale(1.2);
-        }
-        /* Bach l-content may-tghthach b l-navbar */
-        main {
-            padding-top: 80px; 
-        }
+  main {
+    padding-top: 100px;
+    max-width: 1100px; margin: 0 auto;
+    padding-left: 3rem; padding-right: 3rem;
+  }
 
-        /* Style d-yal l-Social Sidebar bach t-ji m-sen-tra f l-jenb kima f tswira 09a664.jpg */
-        .social-sidebar {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px 10px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 100;
-        }
+  .back-link {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gray); text-decoration: none;
+    transition: color .2s, gap .2s;
+    margin-bottom: 2.5rem; margin-top: 1rem;
+  }
+  .back-link:hover { color: var(--white); gap: .8rem; }
 
-        .social-sidebar a {
-            color: #6b7280;
-            font-size: 18px;
-            transition: 0.3s;
-        }
+  .cover-img {
+    width: 100%; height: 440px; object-fit: cover;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border);
+    display: block; margin-bottom: 4rem;
+  }
 
-        .social-sidebar a:hover {
-            color: #a855f7;
-            transform: scale(1.2);
-        }
-        /* Style dyal l-container bach i-koun kolchi f l-isre */
-        nav .flex-col {
-            align-items: flex-start;
-        }
+  .project-layout { display: flex; gap: 4rem; align-items: flex-start; }
+  .project-main { flex: 1; min-width: 0; }
+  .project-sidebar { width: 300px; flex-shrink: 0; position: sticky; top: 100px; }
 
-        /* Effect sghir l-arrow fach kat-hoveri */
-        .group:hover i {
-            color: #a855f7; /* Purple color */
-        }
-                .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
-            z-index: 9999;
-        }
+  .project-main > * + * { margin-top: 5rem; }
 
-        body {
-            cursor: none;
-        }
-    </style>
+  .section-label {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--purple); margin-bottom: .6rem;
+  }
+  .section-title {
+    font-size: 1.8rem; font-weight: 800; letter-spacing: -.02em;
+    margin-bottom: 2rem;
+  }
+
+  .learn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .learn-card {
+    padding: 2rem; border-radius: 1.5rem;
+    background: linear-gradient(145deg, rgba(168,85,247,.05), transparent);
+    border: 1px solid rgba(168,85,247,.12);
+    position: relative; overflow: hidden;
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+  }
+  .learn-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; height: 3px; width: 100%;
+    background: var(--purple);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .learn-card:hover::before { transform: scaleX(1); }
+  .learn-card:hover {
+    border-color: var(--purple);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px -10px rgba(168,85,247,.25);
+  }
+  .learn-card h3 { font-size: 1rem; font-weight: 700; color: var(--purple); margin-bottom: .8rem; }
+  .learn-card p { font-size: .8rem; color: var(--gray); line-height: 1.8; }
+
+  /* Issuer badge */
+  .issuer-badge {
+    display: inline-flex; align-items: center; gap: .6rem;
+    padding: .5rem 1rem;
+    border: 1px solid var(--border); border-radius: 99px;
+    background: var(--surface);
+    font-size: .72rem; color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .issuer-badge span { color: var(--purple); font-weight: 700; }
+
+  /* Skills tags in sidebar */
+  .sidebar-card {
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface); padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .sidebar-label {
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gray); margin-bottom: 1.5rem;
+  }
+  .sidebar-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .sidebar-tag {
+    font-size: .68rem; padding: .3rem .7rem; border-radius: .4rem;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    color: var(--gray);
+  }
+
+  /* Credential verify link */
+  .verify-btn {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'Syne', sans-serif; font-size: .75rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: .8rem 1.4rem; border-radius: 99px;
+    border: 1px solid var(--purple); color: var(--purple);
+    text-decoration: none; transition: background .2s, color .2s;
+    width: 100%; justify-content: center;
+  }
+  .verify-btn:hover { background: var(--purple); color: #fff; }
+
+  /* Related certs grid */
+  .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .related-card {
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface); overflow: hidden;
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+    text-decoration: none; color: inherit; display: flex; flex-direction: column;
+  }
+  .related-card:hover {
+    border-color: var(--purple); transform: translateY(-4px);
+    box-shadow: 0 0 30px rgba(168,85,247,.15);
+  }
+  .related-img {
+    aspect-ratio: 16/9; overflow: hidden;
+    border-bottom: 1px solid var(--border); background: #111;
+  }
+  .related-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .related-card:hover .related-img img { transform: scale(1.05); }
+  .related-body { padding: 1.2rem; flex: 1; }
+  .related-body h3 { font-size: .9rem; font-weight: 700; margin-bottom: .8rem; line-height: 1.4; transition: color .2s; }
+  .related-card:hover .related-body h3 { color: var(--purple); }
+  .related-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .rtag { font-size: .62rem; padding: .2rem .6rem; border-radius: 99px; background: rgba(255,255,255,.04); border: 1px solid var(--border); color: var(--gray); }
+
+  /* CTA */
+  .cta-section {
+    margin-top: 6rem; margin-bottom: 4rem;
+    border: 1px solid var(--border); border-radius: 2rem;
+    background: linear-gradient(135deg, var(--surface), var(--bg));
+    padding: 4rem; text-align: center;
+  }
+  .cta-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+  .cta-section p { font-size: .85rem; color: var(--gray); margin-bottom: 2rem; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+    padding: 1rem 2.5rem; border-radius: 99px;
+    background: var(--purple); color: #fff; text-decoration: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .cta-btn:hover { opacity: .85; transform: translateY(-2px); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .75rem; color: var(--gray);
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    main { padding: 80px 1.5rem 0; }
+    .project-layout { flex-direction: column; }
+    .project-sidebar { width: 100%; position: static; }
+    .learn-grid, .related-grid { grid-template-columns: 1fr; }
+    .social-bar { display: none; }
+    body { cursor: auto; }
+    .cursor { display: none; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
 </head>
+<body>
 
-<body class="bg-[#0B0B0F] text-white font-sans">
-    <div class="custom-cursor"></div>
+<div class="cursor"></div>
 
-    <div class="max-w-6xl mx-auto px-6">
-        <nav class="flex justify-between items-center py-6 fade-up max-w-6xl mx-auto px-6">
-            <div class="flex flex-col">
-                <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
-                
-                
-            </div>
-            <div class="space-x-6 text-sm text-gray-400">
-                <a href="#about" class="hover:text-white transition link">About</a>
-                <a href="#skills" class="hover:text-white transition link">Skills</a>
-                <a href="#projects" class="hover:text-white transition link">Projects</a>
-                <a href="#certifications" class="hover:text-white transition link">Certifications</a>
-                <a href="#contact" class="hover:text-white transition link">Contact</a>
-            </div>
+<nav>
+  <div class="nav-logo">ali<span>.</span>ennadafy</div>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#certifications">Certs</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <a href="Ali_Ennadafy_QA.pdf" target="_blank" class="nav-cta">Resume</a>
+</nav>
 
-            <a href="Ali_Ennadafy_QA.pdf" target="_blank"
-                class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
-                Resume
-            </a>
-        </nav>
+<div class="social-bar">
+  <a href="https://github.com/coderaliennadafy" target="_blank" title="GitHub">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+    </svg>
+  </a>
+  <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank" title="LinkedIn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+    </svg>
+  </a>
+  <a href="mailto:ennadafy@gmail.com" title="Email">
+    <i data-lucide="mail" style="width:16px;height:16px;"></i>
+  </a>
+</div>
+
+<main>
+  <a href="index.html#certifications" class="back-link">
+    <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+    Back to Certifications
+  </a>
+
+  <img src="certificates/certificates_TAU.png" alt="API Test Automation with Postman Certificate" class="cover-img">
+
+  <div class="project-layout">
+
+    <div class="project-main">
+
+      <!-- INTRO -->
+      <div>
+        <div class="section-label">/ certification overview</div>
+        <div class="issuer-badge">
+          <i data-lucide="award" style="width:13px;height:13px;color:var(--purple)"></i>
+          Issued by <span>Test Automation University</span>
+        </div>
+        <h1 style="font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1.2rem;line-height:1.1;">
+          API Test Automation with Postman
+        </h1>
+        <p style="font-size:.9rem;color:var(--gray);line-height:1.85;max-width:620px;">
+          This certification validates my knowledge of API testing using Postman. I learned how to work with REST APIs by sending different types of requests (GET, POST, PUT, DELETE), analyzing responses, and verifying status codes and data accuracy. The course also covered test case creation, error handling, and basic automation using Postman scripts to ensure API reliability and performance.
+        </p>
+      </div>
+
+      <!-- WHAT I LEARNED -->
+      <div>
+        <div class="section-label">/ takeaways</div>
+        <h2 class="section-title">What I Learned</h2>
+        <div class="learn-grid">
+          <div class="learn-card">
+            <h3>Postman Setup & Configuration</h3>
+            <p>Installed and configured Postman for API testing, exploring the interface and workspace management features.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Collections & Environments</h3>
+            <p>Imported and organized API collections and environments for structured, reusable test workflows.</p>
+          </div>
+          <div class="learn-card">
+            <h3>HTTP Request Methods</h3>
+            <p>Created and executed HTTP requests — GET, POST, PUT, DELETE — to interact with RESTful APIs effectively.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Response Validation</h3>
+            <p>Validated API responses using status codes, headers, and body content to ensure correctness and reliability.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Test Automation with JavaScript</h3>
+            <p>Implemented automated tests using JavaScript in Postman's test scripts to run assertions after each request.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Mock Servers</h3>
+            <p>Created and used mock servers for testing APIs without requiring a live backend, enabling early-stage testing.</p>
+          </div>
+          <div class="learn-card">
+            <h3>API Monitoring</h3>
+            <p>Monitored APIs using Postman monitors for scheduled, automated testing to catch regressions over time.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Newman CLI</h3>
+            <p>Used Newman CLI to run Postman collections from the command line, enabling CI/CD pipeline integration.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Dynamic Testing with Variables</h3>
+            <p>Managed environments and variables for dynamic, data-driven testing across multiple test scenarios.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Error Handling & Edge Cases</h3>
+            <p>Tested error handling and edge cases in APIs to ensure robust and resilient endpoint behavior.</p>
+          </div>
+          <div class="learn-card">
+            <h3>Real-World API Workflows</h3>
+            <p>Gained hands-on experience with real-world API testing workflows, bridging theory and practical application.</p>
+          </div>
+          <div class="learn-card">
+            <h3>QA Best Practices</h3>
+            <p>Applied QA mindset to API testing by structuring test suites, documenting results, and ensuring coverage.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
-        <a href="https://github.com/coderaliennadafy" target="_blank"
-        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
-        </svg>
-        </a>
-        <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
-        class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
-        </svg>
-        </a>
-        <a href="mailto:ennadafy@gmail.com"
-            class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
-            <i class="fas fa-envelope"></i>
-        </a>
+    <!-- SIDEBAR -->
+    <div class="project-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-label">/ skills covered</div>
+        <div class="sidebar-tags">
+          <span class="sidebar-tag">Postman</span>
+          <span class="sidebar-tag">REST API</span>
+          <span class="sidebar-tag">API Testing</span>
+          <span class="sidebar-tag">JavaScript</span>
+          <span class="sidebar-tag">Newman CLI</span>
+          <span class="sidebar-tag">GET / POST / PUT / DELETE</span>
+          <span class="sidebar-tag">Mock Servers</span>
+          <span class="sidebar-tag">Test Automation</span>
+          <span class="sidebar-tag">CI/CD Integration</span>
+          <span class="sidebar-tag">Collections</span>
+          <span class="sidebar-tag">Environments</span>
+          <span class="sidebar-tag">Response Validation</span>
+          <span class="sidebar-tag">Error Handling</span>
+          <span class="sidebar-tag">API Monitoring</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">/ details</div>
+        <div style="display:flex;flex-direction:column;gap:.8rem;font-size:.78rem;color:var(--gray);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Issuer</span>
+            <span style="color:var(--white)">Test Automation U.</span>
+          </div>
+          <div style="height:1px;background:var(--border);"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Level</span>
+            <span style="color:var(--white)">Beginner → Intermediate</span>
+          </div>
+          <div style="height:1px;background:var(--border);"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Category</span>
+            <span style="color:var(--white)">API / QA</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#" target="_blank" class="verify-btn">
+        <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+        Verify Credential
+      </a>
+    </div>
+
   </div>
 
-
-    <main class="max-w-6xl mx-auto px-6 py-10">
-        <div class="mb-6">
-            <a href="index.html#certifications" class="flex items-center gap-2 text-gray-400 hover:text-white transition-all text-sm group">
-                <i class="fas fa-arrow-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
-                <span>Back to Certifications</span>
-            </a>
+  <!-- RELATED CERTIFICATIONS -->
+  <div style="margin-top:6rem;">
+    <div class="section-label">/ more certs</div>
+    <h2 class="section-title">Related Certifications</h2>
+    <div class="related-grid">
+      <a href="#" class="related-card">
+        <div class="related-img">
+          <img src="certificates/55df17ed.jpg" alt="C Programming" onerror="this.style.background='#111'">
         </div>
-        <div class="rounded-[30px] overflow-hidden border border-gray-800 bg-[#111] mb-12 shadow-2xl">
-            <img src="certificates/certificates_TAU.png" alt="Project Cover" class="w-full h-[700px] object-cover opacity-90">
+        <div class="related-body">
+          <h3>C Programming from Scratch</h3>
+          <div class="related-tags">
+            <span class="rtag">C</span>
+            <span class="rtag">Programming</span>
+            <span class="rtag">Fundamentals</span>
+          </div>
         </div>
-
-        <div class="flex flex-col md:flex-row gap-12 items-start">
-            
-            <div class="w-full md:w-2/3 space-y-20">
-                <div>
-                    <h1 class="text-5xl font-bold mb-6">API Test Automation with Postman</h1>
-                    <p class="text-gray-400 text-xl leading-relaxed">
-                    This certification validates my knowledge of API testing using Postman. 
-                    I learned how to work with REST APIs by sending different types of requests (GET, POST, PUT, DELETE), 
-                    analyzing responses, and verifying status codes and data accuracy. 
-                    The course also covered test case creation, error handling, and basic automation using Postman scripts 
-                    to ensure API reliability and performance.
-                    </p>
-                </div>
-
-                <section>
-                    <div class="flex items-center gap-3 mb-10">
-                        <div class="p-2 bg-purple-500/20 rounded-lg"><span class="text-purple-500 text-xl"></span></div>
-                        <h2 class="text-3xl font-bold">What I Learned</h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400"> Installed and configured Postman for API testing.</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Explored Postman interface and workspace management</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400"> Imported and organized API collections and environments</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Created and executed HTTP requests (GET, POST, PUT, DELETE)</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Validated API responses using status codes, headers, and body.</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Implemented automated tests using JavaScript in Postman</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Created and used mock servers for testing APIs</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400"> Monitored APIs using Postman monitors for scheduled testing.</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Used Newman CLI to run collections from command line</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Managed environments and variables for dynamic testing</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Tested error handling and edge cases in APIs</p>
-                        </div>
-                        <div class="learn-card p-8 rounded-[30px] space-y-4">
-                            <p class="text-gray-400">Gained hands-on experience with real-world API testing workflows</p>
-                        </div>
-                    </div>
-                </section>
-
-                
-            </div>
-
+      </a>
+      <a href="#" class="related-card">
+        <div class="related-img">
+          <img src="certificates/96b61d51.jpg" alt="Python Beginner" onerror="this.style.background='#111'">
         </div>
-
-    <section class="mt-32">
-        <h2 class="text-3xl font-bold mb-10">Related Certifications</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="module-card rounded-[25px] overflow-hidden group">
-                <div class="aspect-video overflow-hidden bg-gray-900">
-                    <img src="certificates/55df17ed.jpg" 
-                        onerror="this.src='image/project3/crypto1.png'"
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-lg font-bold mb-3">C programming from Scratch</h3>
-                    
-                </div>
-            </div>
-
-            <div class="module-card rounded-[25px] overflow-hidden group">
-                <div class="aspect-video overflow-hidden bg-gray-900">
-                    <img src="certificates/96b61d51.jpg" 
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-lg font-bold mb-3">Python programming Beginner</h3>
-                </div>
-            </div>
-
+        <div class="related-body">
+          <h3>Python Programming Beginner</h3>
+          <div class="related-tags">
+            <span class="rtag">Python</span>
+            <span class="rtag">Programming</span>
+            <span class="rtag">Beginner</span>
+          </div>
         </div>
-    </section>
+      </a>
+     
+    </div>
+  </div>
 
-    <section class="mt-32 mb-20">
-        <div class="bg-gradient-to-br from-[#16161d] to-[#0B0B0F] border border-white/5 rounded-[40px] p-12 text-center shadow-2xl">
-            <h2 class="text-4xl font-bold mb-4">Interested in working together?</h2>
-            <p class="text-gray-400 mb-10 max-w-xl mx-auto">I'm available for freelance projects and full-time opportunities.</p>
-            <a href="mailto:ennadafy.ali@gmail.com" class="bg-[#a855f7] hover:bg-[#9333ea] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 transition shadow-lg shadow-purple-500/20">
-                <span>Hire Me</span>
-            </a>
-        </div>
-    </section>
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Interested in working together?</h2>
+    <p>I'm available for freelance projects and full-time opportunities.</p>
+    <a href="mailto:ennadafy@gmail.com" class="cta-btn">
+      <i data-lucide="send" style="width:16px;height:16px;"></i>
+      Hire Me
+    </a>
+  </div>
 
-    </main>
+</main>
 
-    <script>
-        const cursor = document.querySelector(".custom-cursor");
+<footer>
+  <span>© 2026 Ali Ennadafy</span>
+  <span style="color:var(--border)">·</span>
+  <span>Built with precision & care</span>
+</footer>
 
-        document.addEventListener("mousemove", (e) => {
-            cursor.style.top = e.clientY + "px";
-            cursor.style.left = e.clientX + "px";
-        });
+<script>
+  const cursor = document.querySelector('.cursor');
+  if (cursor) {
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .learn-card, .related-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+  }
 
-        let currentIdx = 0;
-        const viewfinder = document.getElementById('viewfinder');
-        const thumbList = document.getElementById('thumbList');
-
-        function initGallery() {
-            thumbList.innerHTML = ''; // Re-init bach maykonsh doubled
-            galleryImages.forEach((src, index) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.className = `thumb-item w-40 h-24 object-cover rounded-xl ${index === 0 ? 'active' : ''}`;
-                img.onclick = () => showImage(index);
-                // Ila kant chi tsouira makhdamash, had l-line kat-khliha t-ban placeholder
-                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Error+Loading'; };
-                thumbList.appendChild(img);
-            });
-        }
-
-        function showImage(index) {
-            currentIdx = index;
-            viewfinder.src = galleryImages[currentIdx];
-            document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === currentIdx));
-        }
-
-        function changeSlide(dir) {
-            currentIdx = (currentIdx + dir + galleryImages.length) % galleryImages.length;
-            showImage(currentIdx);
-        }
-
-        initGallery();
-    </script>
+  lucide.createIcons();
+</script>
 </body>
 </html>

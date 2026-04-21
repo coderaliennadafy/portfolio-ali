@@ -1,725 +1,813 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ali Ennadafy - Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Ennadafy — QA Engineer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07070a;
+    --surface: #0f0f14;
+    --border: #1a1a24;
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.12);
+    --white: #f0eef8;
+    --gray: #6b6880;
+  }
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+  html { scroll-behavior: smooth; }
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    cursor: none;
+    overflow-x: hidden;
+  }
 
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
+  h1, h2, h3, h4, nav { font-family: 'Syne', sans-serif; }
 
-    /* LOADER */
-    #loader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #0B0B0F;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
+  /* CURSOR */
+  .cursor {
+    position: fixed;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--purple);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, background .2s, transform .15s ease;
+    z-index: 10000;
+    mix-blend-mode: difference;
+  }
+  .cursor.grow { width: 36px; height: 36px; background: var(--purple-dim); }
 
-    .loader-circle {
-      width: 40px;
-      height: 40px;
-      border: 3px solid #fff;
-      border-top: 3px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+  /* LOADER */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity .6s ease;
+  }
+  #loader.hide { opacity: 0; pointer-events: none; }
+  .spin {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+  /* FADE IN */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
 
-    /* SCROLL ANIMATION */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(7,7,10,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--white); }
+  .nav-logo span { color: var(--purple); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--gray); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    font-family: 'Syne', sans-serif; font-size: .8rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: .5rem 1.4rem;
+    border: 1px solid var(--purple);
+    color: var(--purple);
+    border-radius: 99px; text-decoration: none;
+    transition: background .2s, color .2s;
+  }
+  .nav-cta:hover { background: var(--purple); color: #fff; }
 
-    .fade-up.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* SOCIAL SIDEBAR */
+  .social-bar {
+    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: .8rem; z-index: 50;
+  }
+  .social-bar a {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 50%;
+    color: var(--gray);
+    transition: border-color .2s, color .2s, box-shadow .2s;
+    text-decoration: none;
+  }
+  .social-bar a:hover {
+    border-color: var(--purple); color: var(--purple);
+    box-shadow: 0 0 14px rgba(168,85,247,.4);
+  }
 
-    /* CURSOR */
-    @media (min-width: 768px) {
-      body {
-        cursor: none;
-      }
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 6rem 3rem 3rem;
+    max-width: 1100px; margin: 0 auto;
+    gap: 4rem;
+  }
+  .hero-text { flex: 1; }
+  .hero-eyebrow {
+    font-size: .75rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--purple); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 1px; background: var(--purple);
+  }
+  .hero-h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-h1 .bracket { color: var(--purple); font-weight: 400; }
+  .hero-sub {
+    font-size: .9rem; color: var(--gray); line-height: 1.8;
+    max-width: 460px; margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: .8rem; letter-spacing: .06em; text-transform: uppercase;
+    padding: .8rem 2rem; border-radius: 99px;
+    background: var(--purple); color: #fff; text-decoration: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
+  .btn-secondary {
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: .8rem; letter-spacing: .06em; text-transform: uppercase;
+    padding: .8rem 2rem; border-radius: 99px;
+    border: 1px solid var(--border); color: var(--gray); text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); color: var(--white); }
 
-      .cursor {
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        border: 2px solid white;
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        transition: transform 0.1s ease;
-        z-index: 9999;
-      }
+  .hero-image {
+    flex-shrink: 0; position: relative;
+  }
+  .hero-image img {
+    width: 260px; height: 260px; object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: block; position: relative; z-index: 1;
+  }
+  .hero-image::before {
+    content: '';
+    position: absolute; inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(168,85,247,.18) 0%, transparent 70%);
+    z-index: 0;
+  }
+  .hero-available {
+    position: absolute; bottom: 10px; right: -10px;
+    background: rgba(7,7,10,.9);
+    border: 1px solid #22c55e44;
+    padding: .35rem .9rem; border-radius: 99px;
+    font-size: .7rem; display: flex; align-items: center; gap: .4rem;
+    z-index: 2;
+  }
+  .dot-green {
+    width: 6px; height: 6px; background: #22c55e;
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-      .cursor-grow {
-        transform: translate(-50%, -50%) scale(2);
-      }
-    }
+  /* SECTION COMMON */
+  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--purple); margin-bottom: .8rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; letter-spacing: -.02em;
+    margin-bottom: 3rem;
+  }
 
-    /* SKILLS TRACK */
-    .skills-track {
-      display: flex;
-      gap: 30px;
-      width: max-content;
-      animation: scrollLeft 25s linear infinite;
-    }
+  /* ABOUT CARDS */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .about-card {
+    padding: 2rem;
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface);
+    transition: border-color .3s;
+  }
+  .about-card:hover { border-color: var(--purple); }
+  .about-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+  .about-card ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+  .about-card li {
+    font-size: .8rem; color: var(--gray); padding-left: 1rem; position: relative;
+  }
+  .about-card li::before {
+    content: '→'; position: absolute; left: 0; color: var(--purple); font-size: .7rem;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+  .tag {
+    font-size: .7rem; padding: .3rem .8rem; border-radius: 99px;
+    border: 1px solid var(--border); color: var(--gray);
+  }
 
-    .skills-track.reverse {
-      animation: scrollRight 25s linear infinite;
-    }
+  /* SKILLS */
+  .skills-overflow { overflow: hidden; }
+  .skills-track {
+    display: flex; gap: 1rem;
+    width: max-content;
+    animation: scrollL 22s linear infinite;
+    padding: .5rem 0;
+  }
+  .skills-track.rev { animation: scrollR 22s linear infinite; }
+  @keyframes scrollL { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  @keyframes scrollR { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
+  .skill-item {
+    min-width: 70px; height: 70px;
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+  }
+  .skill-item img { width: 34px; opacity: .65; transition: opacity .25s; }
+  .skill-item:hover {
+    border-color: var(--purple);
+    box-shadow: 0 0 18px rgba(168,85,247,.3);
+    transform: scale(1.08);
+  }
+  .skill-item:hover img { opacity: 1; }
+  .skill-item::after {
+    content: attr(data-name);
+    position: absolute; top: -34px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: .25rem .6rem; border-radius: 6px;
+    font-size: .65rem; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s;
+  }
+  .skill-item:hover::after { opacity: 1; }
 
-    @keyframes scrollLeft {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+  /* PROJECTS */
+  #projects { max-width: 100%; padding-left: 0; padding-right: 0; }
+  #projects .inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+  .projects-scroll {
+    display: flex; gap: 1.5rem;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 1rem 3rem 2rem;
+    scrollbar-width: none;
+  }
+  .projects-scroll::-webkit-scrollbar { display: none; }
+  .project-card {
+    min-width: 320px; max-width: 340px; flex-shrink: 0;
+    scroll-snap-align: start;
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface); overflow: hidden;
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .project-card:hover {
+    border-color: var(--purple);
+    transform: translateY(-4px);
+    box-shadow: 0 0 40px rgba(168,85,247,.15);
+  }
+  .project-img {
+    height: 200px; overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    background: #0f0f14;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .5s ease;
+  }
+  .project-card:hover .project-img img { transform: scale(1.06); }
+  .project-body { padding: 1.5rem; }
+  .project-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .project-tag {
+    font-size: .65rem; padding: .25rem .7rem; border-radius: 99px;
+    border: 1px solid var(--border); color: var(--gray);
+  }
+  .project-tag.more {
+    background: rgba(168,85,247,.12); color: var(--purple); border-color: transparent;
+  }
 
-    @keyframes scrollRight {
-      0% { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
+  /* CERTS */
+  .certs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .cert-card {
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface); overflow: hidden;
+    transition: border-color .3s, transform .3s;
+    text-decoration: none; color: inherit;
+  }
+  .cert-card:hover { border-color: var(--purple); transform: translateY(-3px); }
+  .cert-img {
+    height: 180px; overflow: hidden; border-bottom: 1px solid var(--border);
+    background: #111;
+  }
+  .cert-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .cert-card:hover .cert-img img { transform: scale(1.05); }
+  .cert-body { padding: 1.5rem; }
+  .cert-issuer { font-size: .7rem; color: var(--purple); margin-bottom: .5rem; letter-spacing: .05em; }
+  .cert-body h3 { font-size: .9rem; font-weight: 700; line-height: 1.4; margin-bottom: 1rem; }
+  .cert-link { font-size: .75rem; color: var(--gray); }
+  .cert-card:hover .cert-link { color: var(--purple); }
 
-    .skill-box {
-      position: relative;
-      min-width: 80px;
-      height: 80px;
-      border: 1px solid #222;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0B0B0F;
-      transition: 0.3s;
-    }
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testi-card {
+    border: 1px solid var(--border); border-radius: 1.5rem;
+    background: var(--surface); padding: 2rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .quote-icon { color: var(--purple); font-size: 2rem; line-height: 1; font-family: serif; }
+  .testi-text { font-size: .82rem; color: var(--gray); line-height: 1.75; flex: 1; }
+  .testi-author { display: flex; align-items: center; gap: .8rem; }
+  .testi-author img { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border); }
+  .testi-name { font-size: .8rem; font-weight: 700; font-family: 'Syne', sans-serif; }
+  .testi-role { font-size: .7rem; color: var(--gray); }
 
-    .skill-box img {
-      width: 40px;
-      opacity: 0.7;
-      transition: 0.3s;
-    }
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-photo {
+    position: relative; border-radius: 1.5rem; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .contact-photo img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+  .contact-photo-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(7,7,10,.85); backdrop-filter: blur(8px);
+    border: 1px solid rgba(34,197,94,.3); border-radius: 99px;
+    padding: .4rem 1rem; font-size: .7rem;
+    display: flex; align-items: center; gap: .4rem;
+  }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: .4rem; }
+  .form-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); }
+  .form-input, .form-textarea {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 1rem; padding: .9rem 1.2rem;
+    color: var(--white); font-family: 'DM Mono', monospace; font-size: .85rem;
+    transition: border-color .2s; outline: none; width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--purple); }
+  .form-textarea { resize: none; height: 120px; }
+  .form-submit {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+    padding: 1rem; border-radius: 1rem;
+    background: var(--purple); color: #fff; border: none;
+    cursor: pointer; transition: opacity .2s, transform .2s;
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+  }
+  .form-submit:hover { opacity: .85; transform: translateY(-1px); }
 
-    .skill-box:hover {
-      border-color: #a855f7;
-      box-shadow: 0 0 20px #a855f7;
-      transform: scale(1.1);
-    }
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .75rem; color: var(--gray);
+    max-width: 100%;
+  }
 
-    .skill-box:hover img {
-      opacity: 1;
-    }
+  /* TYPING */
+  #typing { color: var(--white); }
+  .cursor-blink {
+    display: inline-block; width: 2px; height: 1.1em;
+    background: var(--purple); margin-left: 2px;
+    animation: blink 1s step-end infinite; vertical-align: text-bottom;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    .skill-box::after {
-      content: attr(data-name);
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%) translateY(5px);
-      background: #111;
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      color: white;
-      opacity: 0;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .skill-box:hover::after {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-        html {
-      scroll-behavior: smooth;
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-
-  </style>
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { flex-direction: column-reverse; padding: 5rem 1.5rem 2rem; gap: 2rem; }
+    .hero-image img { width: 160px; height: 160px; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .testimonials-grid, .certs-grid, .contact-grid { grid-template-columns: 1fr; }
+    .social-bar { display: none; }
+    body { cursor: auto; }
+    .cursor { display: none; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
 </head>
+<body>
 
-<body class="bg-[#0B0B0F] text-white font-sans">
-  <section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-b from-black to-gray-900 text-white">
-  <h1 class="text-4xl md:text-6xl font-bold mb-4">
-    Hi, I'm Ali Ennadafy 👋
-  </h1>
+<div id="loader"><div class="spin"></div></div>
+<div class="cursor"></div>
 
-  <p class="text-gray-400 max-w-xl mb-6">
-    I build modern web applications and data-driven platforms with clean design and strong performance.
-  </p>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ali<span>.</span>ennadafy</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="Ali_Ennadafy_QA.pdf" target="_blank" class="nav-cta">Resume</a>
+</nav>
 
-  <div class="flex gap-4">
-    <a href="#projects" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 transition">View Projects</a>
-    <a href="#contact" class="border border-gray-600 px-6 py-2 rounded-lg hover:bg-gray-800 transition">Contact Me</a>
+<!-- SOCIAL -->
+<div class="social-bar">
+  <a href="https://github.com/coderaliennadafy" target="_blank" title="GitHub">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
+    </svg>
+  </a>
+  <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank" title="LinkedIn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
+    </svg>
+  </a>
+  <a href="mailto:ennadafy@gmail.com" title="Email">
+    <i data-lucide="mail" style="width:16px;height:16px;"></i>
+  </a>
+</div>
+
+<!-- HERO -->
+<div id="hero" class="reveal">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Available for QA roles</div>
+    <h1 class="hero-h1">
+      <span class="bracket">[</span>&nbsp;<span id="typing"></span><span class="cursor-blink"></span>&nbsp;<span class="bracket">]</span>
+    </h1>
+    <p class="hero-sub">Software Tester · Manual & API Testing · Ensuring quality through precise test case design and systematic bug detection.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Work</a>
+      <a href="#contact" class="btn-secondary">Contact Me</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="imagprt.jpeg" alt="Ali Ennadafy">
+    <div class="hero-available">
+      <span class="dot-green"></span>
+      Available for work
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+  <div class="section-label">/ what i do</div>
+  <h2 class="section-title">My Expertise</h2>
+  <div class="about-grid">
+    <div class="about-card">
+      <h3>Software Testing</h3>
+      <ul>
+        <li>Designed and executed structured test cases</li>
+        <li>Tested web apps & validated auth workflows</li>
+        <li>Performed API testing using Postman</li>
+        <li>Automated checks with JavaScript (pm.test)</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Manual Testing</span>
+        <span class="tag">API Testing</span>
+        <span class="tag">Postman</span>
+      </div>
+    </div>
+    <div class="about-card">
+      <h3>Artificial Intelligence</h3>
+      <ul>
+        <li>Developed Nexus Crypto Pro for data analysis</li>
+        <li>Processed data with Python & statistics</li>
+        <li>Applied probability and linear algebra</li>
+        <li>Combining AI with testing for anomaly detection</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">Machine Learning</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
   </div>
 </section>
 
-  <div id="loader">
-    <div class="loader-circle"></div>
+<!-- SKILLS -->
+<section id="skills" class="reveal" style="padding-left:0;padding-right:0;max-width:100%;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 3rem 2rem;">
+    <div class="section-label">/ stack</div>
+    <h2 class="section-title">Skills & Technologies</h2>
   </div>
+  <div class="skills-overflow" style="margin-bottom:1rem;">
+    <div class="skills-track">
+      <div class="skill-item" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
+      <div class="skill-item" data-name="Git"><img src="https://img.icons8.com/color/96/git.png"></div>
+      <div class="skill-item" data-name="GitHub"><img src="https://img.icons8.com/ios-glyphs/90/ffffff/github.png"></div>
+      <div class="skill-item" data-name="Linux"><img src="https://img.icons8.com/color/96/linux.png"></div>
+      <div class="skill-item" data-name="C"><img src="https://img.icons8.com/color/96/c-programming.png"></div>
+      <div class="skill-item" data-name="Bug Reporting"><img src="https://img.icons8.com/fluency/96/bug.png"></div>
+      <div class="skill-item" data-name="Canva"><img src="https://img.icons8.com/color/96/canva.png"></div>
+      <div class="skill-item" data-name="Excel"><img src="https://img.icons8.com/color/96/microsoft-excel-2019.png"></div>
+      <div class="skill-item" data-name="Jira"><img src="https://img.icons8.com/color/96/jira.png"></div>
+      <div class="skill-item" data-name="Google Docs"><img src="https://img.icons8.com/color/96/google-docs.png"></div>
+      <div class="skill-item" data-name="Google Sheets"><img src="https://img.icons8.com/color/96/google-sheets.png"></div>
+      <!-- duplicate for infinite -->
+      <div class="skill-item" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
+      <div class="skill-item" data-name="Git"><img src="https://img.icons8.com/color/96/git.png"></div>
+      <div class="skill-item" data-name="GitHub"><img src="https://img.icons8.com/ios-glyphs/90/ffffff/github.png"></div>
+      <div class="skill-item" data-name="Linux"><img src="https://img.icons8.com/color/96/linux.png"></div>
+      <div class="skill-item" data-name="C"><img src="https://img.icons8.com/color/96/c-programming.png"></div>
+      <div class="skill-item" data-name="Bug Reporting"><img src="https://img.icons8.com/fluency/96/bug.png"></div>
+      <div class="skill-item" data-name="Canva"><img src="https://img.icons8.com/color/96/canva.png"></div>
+      <div class="skill-item" data-name="Excel"><img src="https://img.icons8.com/color/96/microsoft-excel-2019.png"></div>
+      <div class="skill-item" data-name="Jira"><img src="https://img.icons8.com/color/96/jira.png"></div>
+      <div class="skill-item" data-name="Google Docs"><img src="https://img.icons8.com/color/96/google-docs.png"></div>
+      <div class="skill-item" data-name="Google Sheets"><img src="https://img.icons8.com/color/96/google-sheets.png"></div>
+    </div>
+  </div>
+  <div class="skills-overflow">
+    <div class="skills-track rev">
+      <div class="skill-item" data-name="HTML"><img src="https://img.icons8.com/color/96/html-5--v1.png"></div>
+      <div class="skill-item" data-name="CSS"><img src="https://img.icons8.com/color/96/css3.png"></div>
+      <div class="skill-item" data-name="JavaScript"><img src="https://img.icons8.com/color/96/javascript--v1.png"></div>
+      <div class="skill-item" data-name="Python"><img src="https://img.icons8.com/color/96/python.png"></div>
+      <div class="skill-item" data-name="Tailwind"><img src="https://img.icons8.com/color/96/tailwind_css.png"></div>
+      <div class="skill-item" data-name="Algebra"><img src="https://img.icons8.com/fluency/96/math.png"></div>
+      <div class="skill-item" data-name="Statistics"><img src="https://img.icons8.com/color/96/combo-chart--v1.png"></div>
+      <div class="skill-item" data-name="AI"><img src="https://img.icons8.com/fluency/96/artificial-intelligence.png"></div>
+      <div class="skill-item" data-name="SQL"><img src="https://img.icons8.com/color/96/sql.png"></div>
+      <div class="skill-item" data-name="Probability"><img src="https://img.icons8.com/color/96/dice.png"></div>
+      <div class="skill-item" data-name="Test Cases"><img src="https://img.icons8.com/fluency/96/test-passed.png"></div>
+      <!-- duplicate -->
+      <div class="skill-item" data-name="HTML"><img src="https://img.icons8.com/color/96/html-5--v1.png"></div>
+      <div class="skill-item" data-name="CSS"><img src="https://img.icons8.com/color/96/css3.png"></div>
+      <div class="skill-item" data-name="JavaScript"><img src="https://img.icons8.com/color/96/javascript--v1.png"></div>
+      <div class="skill-item" data-name="Python"><img src="https://img.icons8.com/color/96/python.png"></div>
+      <div class="skill-item" data-name="Tailwind"><img src="https://img.icons8.com/color/96/tailwind_css.png"></div>
+      <div class="skill-item" data-name="Algebra"><img src="https://img.icons8.com/fluency/96/math.png"></div>
+      <div class="skill-item" data-name="Statistics"><img src="https://img.icons8.com/color/96/combo-chart--v1.png"></div>
+      <div class="skill-item" data-name="AI"><img src="https://img.icons8.com/fluency/96/artificial-intelligence.png"></div>
+      <div class="skill-item" data-name="SQL"><img src="https://img.icons8.com/color/96/sql.png"></div>
+      <div class="skill-item" data-name="Probability"><img src="https://img.icons8.com/color/96/dice.png"></div>
+      <div class="skill-item" data-name="Test Cases"><img src="https://img.icons8.com/fluency/96/test-passed.png"></div>
+    </div>
+  </div>
+</section>
 
-  <div class="cursor"></div>
-
-  <div class="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50">
-    <a href="https://github.com/coderaliennadafy" target="_blank"
-      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2.1c-3.1.7-3.7-1.3-3.7-1.3-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 2.7.9 3.3.7.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.3-5.1-5.7 0-1.3.5-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.2 0 0 .9-.3 3.2 1.2a10.8 10.8 0 0 1 5.8 0c2.3-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.5-1.5 7.7-5.8 7.7-10.8C23.3 5.5 18.3.5 12 .5z"/>
-      </svg>
+<!-- PROJECTS -->
+<section id="projects" style="padding:6rem 0; max-width:100%;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 3rem 2rem;" class="reveal">
+    <div class="section-label">/ work</div>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-scroll reveal">
+    <a href="project1.html" class="project-card">
+      <div class="project-img"><img src="image/project 1/1-cover.jpg" alt="nopCommerce" onerror="this.style.display='none'"></div>
+      <div class="project-body">
+        <h3>Manual Testing — nopCommerce</h3>
+        <div class="project-tags">
+          <span class="project-tag">Manual Testing</span>
+          <span class="project-tag">Test Cases</span>
+          <span class="project-tag">Bug Reporting</span>
+          <span class="project-tag more">+5</span>
+        </div>
+      </div>
     </a>
-    <a href="https://www.linkedin.com/in/ali-ennadafy-ab16331a8/" target="_blank"
-      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 transition shadow-[0_0_10px_#a855f7]">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1 4.98 2.12 4.98 3.5zM.24 8.75h4.5V24h-4.5V8.75zM8.7 8.75h4.3v2.1h.06c.6-1.1 2.1-2.2 4.3-2.2 4.6 0 5.5 3 5.5 6.8V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V24H8.7V8.75z"/>
-      </svg>
+    <a href="project2.html" class="project-card">
+      <div class="project-img"><img src="image/project2/1-cover.jpg" alt="JSONPlaceholder" onerror="this.style.display='none'"></div>
+      <div class="project-body">
+        <h3>API Testing — JSONPlaceholder</h3>
+        <div class="project-tags">
+          <span class="project-tag">Postman</span>
+          <span class="project-tag">REST API</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag more">+7</span>
+        </div>
+      </div>
     </a>
-    <a href="mailto:ennadafy@gmail.com"
-      class="w-12 h-12 flex items-center justify-center border border-gray-700 rounded-full hover:bg-purple-500 hover:text-white transition shadow-[0_0_10px_#a855f7]">
-      <i data-lucide="mail" class="w-6 h-6"></i>
+    <a href="project3.html" class="project-card">
+      <div class="project-img"><img src="image/project3/crypto1.png" alt="Nexus Crypto" onerror="this.style.display='none'"></div>
+      <div class="project-body">
+        <h3>Nexus Crypto Quant Analysis & Backtesting</h3>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">NumPy</span>
+          <span class="project-tag">Pandas</span>
+          <span class="project-tag">Matplotlib</span>
+          <span class="project-tag more">+7</span>
+        </div>
+      </div>
+    </a>
+    <a href="project4.html" class="project-card">
+      <div class="project-img"><img src="portfolio_pic/Screenshot 2026-04-19 150740.png" alt="Portfolio" onerror="this.style.display='none'"></div>
+      <div class="project-body">
+        <h3>My Portfolio</h3>
+        <div class="project-tags">
+          <span class="project-tag">HTML5</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">Tailwind CSS</span>
+          <span class="project-tag">JavaScript</span>
+        </div>
+      </div>
     </a>
   </div>
+</section>
 
-  <div class="max-w-6xl mx-auto px-6">
-    <nav class="flex justify-between items-center py-6 fade-up">
-        <h1 class="text-lg font-medium tracking-wide">ali ennadafy</h1>
-        <div class="space-x-6 text-sm text-gray-400">
-            <a href="#about" class="hover:text-white transition link">About</a>
-            <a href="#skills" class="hover:text-white transition link">Skills</a>
-            <a href="#projects" class="hover:text-white transition link">Projects</a>
-            <a href="#certifications" class="hover:text-white transition link">Certifications</a>
-            <a href="#contact" class="hover:text-white transition link">Contact</a>
-        </div>
-        <a href="Ali_Ennadafy_QA.pdf" target="_blank"
-            class="bg-white text-black px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition link">
-            Resume
-        </a>
-    </nav>
-
-    <section class="py-20 flex flex-col md:flex-row items-center justify-between fade-up">
-      <div class="max-w-xl">
-        <h1 class="text-5xl md:text-7xl font-semibold leading-tight flex items-center gap-3">
-          <span class="text-purple-400 text-3xl md:text-5xl">[</span>
-          <span id="typing" class="text-white text-5xl md:text-7xl"></span>
-          <span class="text-purple-400 text-3xl md:text-5xl">]</span>
-        </h1>
-        <p class="mt-8 text-gray-400 text-lg">
-          Software Tester | Manual & API Testing | Ensuring quality through precise testing and bug detection
-        </p>
-        <div class="mt-10">
-          <a href="#projects"
-            class="bg-white text-black px-6 py-3 rounded-full text-sm hover:bg-gray-300 transition duration-300 shadow-lg link">
-            View Work
-          </a>
-        </div>
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="reveal">
+  <div class="section-label">/ credentials</div>
+  <h2 class="section-title">Certifications</h2>
+  <div class="certs-grid">
+    <a href="certif1.html" class="cert-card">
+      <div class="cert-img"><img src="certificates/certificates_TAU.png" alt="TAU" onerror="this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:2rem\'>📜</div>'"></div>
+      <div class="cert-body">
+        <div class="cert-issuer">TAU · Applitools</div>
+        <h3>API Test Automation with Postman</h3>
+        <span class="cert-link">View Details →</span>
       </div>
-      <div class="relative mt-10 md:mt-0">
-        <div class="absolute inset-0 rounded-full bg-purple-500 blur-2xl opacity-30"></div>
-        <img src="imagprt.jpeg" class="w-64 h-64 object-cover rounded-full border-4 border-white relative z-10 shadow-xl">
+    </a>
+    <a href="certif2.html" class="cert-card">
+      <div class="cert-img"><img src="certificates/55df17ed.jpg" alt="C Programming" onerror="this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:2rem\'>📜</div>'"></div>
+      <div class="cert-body">
+        <div class="cert-issuer">Mindluster Academy</div>
+        <h3>C Programming from Scratch</h3>
+        <span class="cert-link">View Details →</span>
       </div>
-    </section>
-
-    <section id="about" class="pt-40 pb-10 fade-up">
-  <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center">What I Do?</h2>
-      <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-        <div class="border border-gray-800 p-8 rounded-2xl hover:border-purple-500 transition">
-          <h3 class="text-xl font-medium mb-4">Software Testing</h3>
-          <ul class="list-disc pl-5 text-gray-400 text-sm space-y-2">
-            <li>Designed and executed structured test cases</li>
-            <li>Tested web applications and validated authentication workflows</li>
-            <li>Performed API testing using Postman</li>
-            <li>Automated test checks using JavaScript (pm.test)</li>
-          </ul>
-          <div class="flex flex-wrap gap-2 text-xs text-gray-300 mt-6">
-            <span class="border px-3 py-1 rounded-full">Manual Testing</span>
-            <span class="border px-3 py-1 rounded-full">API Testing</span>
-            <span class="border px-3 py-1 rounded-full">Postman</span>
-          </div>
-        </div>
-        <div class="border border-gray-800 p-8 rounded-2xl hover:border-purple-500 transition">
-          <h3 class="text-xl font-medium mb-4">Artificial Intelligence</h3>
-          <ul class="list-disc pl-5 text-gray-400 text-sm space-y-2">
-            <li>Developed Nexus Crypto Pro for data analysis</li>
-            <li>Processed data using Python and statistical methods</li>
-            <li>Applied probability and linear algebra concepts</li>
-            <li>Combining AI with testing for anomaly detection</li>
-          </ul>
-          <div class="flex flex-wrap gap-2 text-xs text-gray-300 mt-6">
-            <span class="border px-3 py-1 rounded-full">Python</span>
-            <span class="border px-3 py-1 rounded-full">Machine Learning</span>
-            <span class="border px-3 py-1 rounded-full">SQL</span>
-          </div>
-        </div>
+    </a>
+    <a href="certif3.html" class="cert-card">
+      <div class="cert-img"><img src="certificates/96b61d51.jpg" alt="Python" onerror="this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:2rem\'>📜</div>'"></div>
+      <div class="cert-body">
+        <div class="cert-issuer">Mindluster Academy</div>
+        <h3>Python Programming for Beginners</h3>
+        <span class="cert-link">View Details →</span>
       </div>
-    </section>
+    </a>
+  </div>
+</section>
 
-    <section id="skills" class="py-32 fade-up overflow-hidden">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-16 text-center">Skills & Technologies</h2>
-      <div class="skills-track mb-10">
-        <div class="skill-box" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
-        <div class="skill-box" data-name="Git"><img src="https://img.icons8.com/color/96/git.png"></div>
-        <div class="skill-box" data-name="GitHub"><img src="https://img.icons8.com/ios-glyphs/90/ffffff/github.png"></div>
-        <div class="skill-box" data-name="Linux"><img src="https://img.icons8.com/color/96/linux.png"></div>
-        <div class="skill-box" data-name="C"><img src="https://img.icons8.com/color/96/c-programming.png"></div>
-        <div class="skill-box" data-name="Bug Reporting"><img src="https://img.icons8.com/fluency/96/bug.png"></div>
-        <div class="skill-box" data-name="Postman"><img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postman-is-the-only-complete-api-development-environment-logo-shadow-tal-revivo.png"></div>
-        <div class="skill-box" data-name="Canva"><img src="https://img.icons8.com/color/96/canva.png"></div>
-        <div class="skill-box" data-name="Excel"><img src="https://img.icons8.com/color/96/microsoft-excel-2019.png"></div>
-        <div class="skill-box" data-name="Jira"><img src="https://img.icons8.com/color/96/jira.png"></div>
-        <div class="skill-box" data-name="google Docs"><img src="https://img.icons8.com/color/96/google-docs.png"></div>
-        <div class="skill-box" data-name="google Sheets"><img src="https://img.icons8.com/color/96/google-sheets.png"></div>
-      </div>
-      <div class="skills-track reverse">
-        <div class="skill-box" data-name="HTML"><img src="https://img.icons8.com/color/96/html-5--v1.png"></div>
-        <div class="skill-box" data-name="CSS"><img src="https://img.icons8.com/color/96/css3.png"></div>
-        <div class="skill-box" data-name="JS"><img src="https://img.icons8.com/color/96/javascript--v1.png"></div>
-        <div class="skill-box" data-name="Python"><img src="https://img.icons8.com/color/96/python.png"></div>
-        <div class="skill-box" data-name="Tailwind"><img src="https://img.icons8.com/color/96/tailwind_css.png"></div>
-        <div class="skill-box" data-name="Algebra"><img src="https://img.icons8.com/fluency/96/math.png"></div>
-        <div class="skill-box" data-name="Statistics"><img src="https://img.icons8.com/color/96/combo-chart--v1.png"></div>
-        <div class="skill-box" data-name="AI"><img src="https://img.icons8.com/fluency/96/artificial-intelligence.png"></div>
-        <div class="skill-box" data-name="SQL"><img src="https://img.icons8.com/color/96/sql.png"></div>
-        <div class="skill-box" data-name="Probability"><img src="https://img.icons8.com/color/96/dice.png"></div>
-        <div class="skill-box" data-name="Test Cases"><img src="https://img.icons8.com/fluency/96/test-passed.png"></div>
-      </div>
-    </section>
-
-    
-  </div> <section id="projects" class="py-32 fade-up w-full">
-    <h2 class="text-4xl md:text-4xl font-bold mb-16 text-center text-white">Projects</h2>
-    
-    <div class="w-full px-4 md:pr-[120px] md:pl-[4%]">
-     <div class="flex gap-8 overflow-x-auto scroll-smooth px-4">
-      
-          <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">          <div class="h-[350px] overflow-hidden border-b border-[#222]">
-            <img src="image/project 1/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-10">
-            <a href="project1.html" class="hover:text-purple-500 transition">
-              <h3 class="text-xl font-bold mb-6">
-                Manual Testing - nopCommerce
-              </h3>
-            </a>
-            
-            </a>
-            <div class="flex flex-wrap gap-3">
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Manual Testing</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Cases</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Bug Reporting</span>
-              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+5</span>
-            </div>
-          </div>
-        </div>
-
-        
-        <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
-          
-          <div class="h-[350px] overflow-hidden border-b border-[#222]">
-            <img src="image/project2/1-cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-10">
-            <a href="project2.html" class="hover:text-purple-500 transition">
-                <h3 class="text-xl font-bold mb-6">API testing — JSONPlaceHolder</h3>
-            </a>
-            <div class="flex flex-wrap gap-3">
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Postman</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">REST API</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">JavaScript</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Test Scripts</span>
-              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+7</span>
-            </div>
-          </div>
-        </div>
-
-        
-        <div class="group min-w-[320px] max-w-[350px] flex-shrink-0 snap-start bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">       
-          <div class="h-[350px] overflow-hidden border-b border-[#222]">
-            <img src="image/project3/crypto1.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-5">
-            <a href="project3.html" class="hover:text-purple-500 transition">
-              <div class="p-6 flex flex-col space-y-0.5">
-
-                <h3 class="text-lg font-bold mb-0.5">
-                    Nexus Crypto Quant Analysis & Backtesting Platform
-                </h3>
-
-                <div class="flex flex-wrap gap-2">
-                </div>
-
-            </div>
-            </a>
-            <div class="flex flex-wrap gap-3">
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Python</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">NumPy</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Pandas</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Matplotlib</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 transition-all hover:bg-[#a855f7] hover:text-white">Backtesting</span>
-              <span class="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full text-[11px] font-bold">+7</span>
-              
-          </div>
-        </div>
-      </div>
-
-      <a href="project4.html" class="min-w-[320px] max-w-[350px] flex-shrink-0 snap-start">
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
-
-          <div class="h-[350px] overflow-hidden border-b border-[#222]">
-            <img src="portfolio_pic/Screenshot 2026-04-19 150740.png"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-
-          <div class="p-10">
-            <h3 class="text-xl font-bold mb-6 group-hover:text-purple-400 transition">
-              My Portfolio
-            </h3>
-
-            <div class="flex flex-wrap gap-3">
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 hover:bg-[#a855f7] hover:text-white">React</span>
-              <span class="border border-[#444] px-4 py-1.5 rounded-full text-sm text-gray-300 hover:bg-[#a855f7] hover:text-white">API</span>
-            </div>
-          </div>
-
-        </div>
-      </a>
-    </div>
-
-     
-    
-  </section>
-
-  <section id="certifications" class="py-20 fade-up w-full">
-    <h2 class="text-2xl md:text-3xl font-bold mb-12 text-center text-white">Certifications</h2>
-    
-    <div class="w-full px-4 md:pr-[120px] md:pl-[4%]">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        <!-- Certificate 1 -->
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
-          <div class="h-[250px] overflow-hidden border-b border-[#222]">
-            <img src="certificates/certificates_TAU.png" 
-                alt="TAU Certificate"
-                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-8">
-            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
-              <span>TAU (via Applitools)</span>
-            </div>
-            <a href="certif1.html">
-              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition">
-                API Test Automation with Postman
-              </h3>
-            </a>
-            <a href="certif1.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
-              View Details →
-            </a>
-          </div>
-        </div>
-
-        <!-- Certificate 2 -->
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
-          <div class="h-[250px] overflow-hidden border-b border-[#222]">
-            <img src="certificates/55df17ed.jpg" 
-                alt="C Programming Certificate"
-                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-8">
-            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
-              <span>Mindluster Academy</span>
-            </div>
-            <a href="certif2.html">
-              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition cursor-pointer">
-                C programming from Scratch
-              </h3>
-            </a>
-            <a href="certif2.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
-              View Details →
-            </a>
-          </div>
-        </div>
-
-        <!-- Certificate 3 -->
-        <div class="group bg-[#111] border border-[#222] rounded-[30px] overflow-hidden transition-all duration-400 hover:border-[#a855f7] hover:-translate-y-2">
-          <div class="h-[250px] overflow-hidden border-b border-[#222]">
-            <img src="certificates/96b61d51.jpg" 
-                alt="Python Certificate"
-                onerror="this.style.display='none'; this.parentElement.style.background='#1a1a2e'; this.parentElement.innerHTML='<div style=\'height:100%;display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:40px\'>📜</div>'"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-          </div>
-          <div class="p-8">
-            <div class="flex items-center gap-2 mb-2 text-purple-400 text-sm">
-              <span>Mindluster Academy</span>
-            </div>
-            <a href="certif3.html">
-              <h3 class="text-xl font-bold mb-4 text-white hover:text-[#a855f7] transition cursor-pointer">
-                Python programming for Beginners
-              </h3>
-            </a>
-            <a href="certif3.html" class="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
-              View Details →
-            </a>
-          </div>
-        </div>
-
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="reveal">
+  <div class="section-label">/ social proof</div>
+  <h2 class="section-title">Recommendations</h2>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">Ali ddar m3ana khidma nadiya f-l-manual testing. Spotted bugs li kounna ghadi n-ghlet fihom f-l-production. Highly professional.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+        <div><div class="testi-name">Yassine El Amrani</div><div class="testi-role">Founder, DevStudio Morocco</div></div>
       </div>
     </div>
-  </section>
-
-  <section id="testimonials" class="py-20 fade-up w-full overflow-hidden">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl md:text-5xl font-bold mb-16 text-center text-white">Recommendations</h2>
-
-      <div class="swiper mySwiper pb-12">
-        <div class="swiper-wrapper">
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"Ali ddar m3ana khidma nadiya f-l-manual testing. Spotted bugs li kounna ghadi n-ghlet fihom f-l-production. Highly professional."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">Yassine El Amrani</h4>
-                  <p class="text-gray-500 text-xs">Founder of DevStudio Morocco</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"I worked with Ali on a freelance project for an e-commerce app. His API testing skills using Postman are top-notch."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">Othmane Tazi</h4>
-                  <p class="text-gray-500 text-xs">Freelance Web Developer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"Ali is a fast learner. He integrated perfectly with our QA team and improved our bug reporting process significantly."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/22.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">John Doe</h4>
-                  <p class="text-gray-500 text-xs">QA Team Lead at TechSolutions</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"Detail-oriented and very committed. The test cases he writes are very clear and easy to follow even for developers."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/60.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">David Johnson</h4>
-                  <p class="text-gray-500 text-xs">Project Manager</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"Working with Ali was a pleasure. He has a great mindset for a tester, always curious and double-checking everything."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/11.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">Saad Alami</h4>
-                  <p class="text-gray-500 text-xs">Senior QA Automation Engineer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide h-auto">
-            <div class="bg-[#111] border border-gray-800 p-8 rounded-[30px] h-full flex flex-col">
-              <span class="text-purple-500 text-4xl mb-4">“</span>
-              <p class="text-gray-300 mb-8 flex-grow">"The quality of Ali's work is impressive. He helped us reach our release deadline with zero critical bugs."</p>
-              <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/52.jpg" class="w-12 h-12 rounded-full border-2 border-purple-500">
-                <div>
-                  <h4 class="text-white font-bold text-sm">Khalid Ait</h4>
-                  <p class="text-gray-500 text-xs">CEO at Moroccan Startups</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="swiper-pagination"></div>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">I worked with Ali on a freelance project for an e-commerce app. His API testing skills using Postman are top-notch.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="">
+        <div><div class="testi-name">Othmane Tazi</div><div class="testi-role">Freelance Web Developer</div></div>
       </div>
     </div>
-  </section>
-
-  <section id="contact" class="py-20 fade-up w-full">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-4xl md:text-6xl font-bold mb-16 text-center text-white">Get In Touch</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        
-        <div class="relative group">
-          <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-[30px] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-          <div class="relative bg-[#0B0B0F] rounded-[30px] overflow-hidden border border-gray-800">
-            <img src="imagprt.jpeg" alt="Ali Ennadafy" class="w-full h-[500px] object-cover">
-            <div class="absolute top-6 right-6 bg-black/50 backdrop-blur-md border border-green-500/50 px-4 py-1 rounded-full flex items-center gap-2">
-              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span class="text-white text-sm font-medium">Available for work</span>
-            </div>
-            <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black to-transparent">
-              <h3 class="text-2xl font-bold text-white">Ali Ennadafy</h3>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-6">
-          <form action="#" class="space-y-4">
-            <div>
-              <label class="block text-gray-400 text-sm mb-2">Name</label>
-              <input type="text" placeholder="Your name" 
-                    class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all">
-            </div>
-            
-            <div>
-              <label class="block text-gray-400 text-sm mb-2">Email</label>
-              <input type="email" placeholder="your.email@example.com" 
-                    class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all">
-            </div>
-            
-            <div>
-              <label class="block text-gray-400 text-sm mb-2">Message</label>
-              <textarea placeholder="Your message..." rows="5" 
-                        class="w-full bg-[#111] border border-gray-800 text-white px-6 py-4 rounded-2xl focus:outline-none focus:border-purple-500 transition-all resize-none"></textarea>
-            </div>
-
-            <button type="submit" 
-                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2 group">
-              Send Message 
-              <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-            </button>
-          </form>
-        </div>
-
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">Ali is a fast learner. He integrated perfectly with our QA team and improved our bug reporting process significantly.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="">
+        <div><div class="testi-name">John Doe</div><div class="testi-role">QA Team Lead, TechSolutions</div></div>
       </div>
     </div>
-  </section>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">Detail-oriented and very committed. The test cases he writes are very clear and easy to follow even for developers.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/60.jpg" alt="">
+        <div><div class="testi-name">David Johnson</div><div class="testi-role">Project Manager</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">Working with Ali was a pleasure. He has a great mindset for a tester, always curious and double-checking everything.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="">
+        <div><div class="testi-name">Saad Alami</div><div class="testi-role">Senior QA Automation Engineer</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p class="testi-text">The quality of Ali's work is impressive. He helped us reach our release deadline with zero critical bugs.</p>
+      <div class="testi-author">
+        <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="">
+        <div><div class="testi-name">Khalid Ait</div><div class="testi-role">CEO, Moroccan Startups</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+  <div class="section-label">/ reach out</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="contact-grid">
+    <div class="contact-photo">
+      <img src="imagprt.jpeg" alt="Ali Ennadafy">
+      <div class="contact-photo-badge">
+        <span class="dot-green"></span>
+        Available for work
+      </div>
+    </div>
+    <div>
+      <p style="font-size:.85rem;color:var(--gray);line-height:1.8;margin-bottom:2rem;">
+        Have a project in mind or looking for a QA engineer? I'd love to hear from you.
+      </p>
+      <form class="contact-form" action="#">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="your.email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Your message..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          Send Message
+          <i data-lucide="send" style="width:16px;height:16px;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Ali Ennadafy</span>
+  <span style="color:var(--border)">·</span>
+  <span>Built with precision & care</span>
+</footer>
 
 <script>
-  var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 1,
-    spaceBetween: 30,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    breakpoints: {
-      768: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 }
-    },
-    autoplay: {
-      delay: 3000,
-    },
+  // LOADER
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hide');
+    }, 600);
   });
+
+  // CURSOR
+  const cursor = document.querySelector('.cursor');
+  if (cursor) {
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .skill-item, .project-card, .cert-card, .about-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+  }
+
+  // REVEAL ON SCROLL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // TYPING
+  const words = ['Software Tester', 'AI Student'];
+  let i = 0, j = 0, del = false;
+  function type() {
+    const w = words[i];
+    if (del) j--; else j++;
+    document.getElementById('typing').textContent = w.slice(0, j);
+    if (!del && j === w.length) { del = true; setTimeout(type, 1200); }
+    else if (del && j === 0) { del = false; i = (i + 1) % words.length; setTimeout(type, 300); }
+    else setTimeout(type, del ? 50 : 100);
+  }
+  type();
+
+  // LUCIDE
+  lucide.createIcons();
 </script>
-
-<style>
-  .swiper-pagination-bullet { background: #888; }
-  .swiper-pagination-bullet-active { background: #a855f7; }
-</style>
-
-  <script>
-    window.addEventListener("load", () => {
-      document.getElementById("loader").style.display = "none";
-    });
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-        }
-      });
-    });
-
-    document.querySelectorAll(".fade-up").forEach(el => {
-      observer.observe(el);
-    });
-
-    const cursor = document.querySelector(".cursor");
-    document.addEventListener("mousemove", e => {
-      if (cursor) {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-      }
-    });
-
-    lucide.createIcons();
-
-    document.querySelectorAll(".link").forEach(link => {
-      link.addEventListener("mouseenter", () => cursor.classList.add("cursor-grow"));
-      link.addEventListener("mouseleave", () => cursor.classList.remove("cursor-grow"));
-    });
-
-    const words = ["Software Tester", "AI Student"];
-    let i = 0, j = 0, isDeleting = false;
-    function type() {
-      let currentWord = words[i];
-      if (isDeleting) j--; else j++;
-      document.getElementById("typing").textContent = currentWord.substring(0, j);
-      if (!isDeleting && j === currentWord.length) {
-        isDeleting = true;
-        setTimeout(type, 1000);
-      } else if (isDeleting && j === 0) {
-        isDeleting = false;
-        i = (i + 1) % words.length;
-        setTimeout(type, 300);
-      } else {
-        setTimeout(type, isDeleting ? 50 : 100);
-      }
-    }
-    type();
-
-    function scrollProjects(direction) {
-        const container = document.getElementById('projectsContainer');
-
-        const cardWidth = 370; // عرض card + gap
-        container.scrollBy({
-          left: direction * cardWidth,
-          behavior: 'smooth'
-        });
-      }
-  </script>
-
 </body>
 </html>
